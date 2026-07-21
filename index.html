@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart BP Reader - ระบบอ่านค่าความดันโลหิตด้วยปัญญาประดิษฐ์</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Tesseract.js -->
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  
+  <style>
+    body {
+      font-family: 'Inter', 'Sarabun', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    /* Value level styling */
+    .level-low { background-color: #f0fdf4; border-color: #86efac; color: #166534; } /* Normal BP fallback or mild low */
+    .level-good { background-color: #f0fdf4; border-color: #86efac; color: #166534; }
+    .level-adjust { background-color: #fef9c3; border-color: #fef08a; color: #713f12; }
+    .level-mid { background-color: #ffedd5; border-color: #fed7aa; color: #9a3412; }
+    .level-high { background-color: #fee2e2; border-color: #fca5a5; color: #991b1b; }
+    .level-danger { background-color: #fee2e2; border-color: #fca5a5; color: #991b1b; animation: pulse-border 1.5s infinite; }
+    
+    @keyframes pulse-border {
+      0%, 100% { border-color: #ef4444; }
+      50% { border-color: #b91c1c; }
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+  <!-- Header Section -->
+  <header class="bg-slate-900 text-white shadow-md border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <!-- SVG Logo (Premium clinical representation) -->
+        <div class="bg-teal-500 p-2 rounded-lg text-slate-900">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-xl font-bold tracking-tight">ระบบอ่านค่าความดันโลหิตด้วยปัญญาประดิษฐ์</h1>
+          <p class="text-xs text-slate-400">พัฒนาโดย วิทยาลัยเทคนิคสมุทรสงคราม (Smart BP Reader)</p>
+        </div>
+      </div>
+      
+      <!-- Navigation Links -->
+      <nav class="flex flex-wrap items-center gap-1 text-sm font-medium">
+        <a href="index.html" class="px-3 py-2 rounded-md bg-slate-800 text-teal-400 border border-slate-700">หน้าแรก</a>
+        <a href="history.html" class="px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 hover:text-white transition">ประวัติ/กราฟ</a>
+        <a href="guide.html" class="px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 hover:text-white transition">เกณฑ์/คำอธิบาย</a>
+        <a href="register.html" class="px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 hover:text-white transition">ลงทะเบียน</a>
+        <a href="profiles.html" class="px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 hover:text-white transition">โปรไฟล์ผู้ใช้</a>
+        <a href="management.html" class="ml-2 p-2 rounded-md hover:bg-slate-800 text-slate-400 hover:text-white transition" title="จัดการระบบ">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+          </svg>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content Shell -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      
+      <!-- Left Column: Camera Upload and Capturing -->
+      <div class="space-y-6">
+        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+          <h2 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            </svg>
+            ถ่ายภาพหน้าจอเครื่องวัด / อัปโหลดไฟล์
+          </h2>
+
+          <!-- Camera Stream and Preview Panel -->
+          <div class="mb-6">
+            <div class="relative bg-slate-950 aspect-[4/3] rounded-lg overflow-hidden border border-slate-800">
+              <!-- Video Stream -->
+              <video id="video" autoplay playsinline muted class="w-full h-full object-cover"></video>
+              <!-- Mirror frame ellipse for facial/camera target guide (hidden during BP photo capture) -->
+              <div id="faceOverlay" class="absolute inset-0 border-[3px] border-dashed border-teal-400/70 rounded-[50%/60%] m-[10%] pointer-events-none hidden"></div>
+              
+              <!-- Captured/Uploaded Image Preview Overlay -->
+              <img id="preview" src="" alt="ผลการถ่ายรูป" class="absolute inset-0 w-full h-full object-cover hidden">
+              
+              <!-- Camera state badge -->
+              <span id="cameraBadge" class="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-sm text-xs font-semibold px-2 py-1 rounded text-slate-300 border border-slate-700">กล้องปิดอยู่</span>
+            </div>
+            <p class="text-xs text-slate-500 mt-2 text-center">จัดตำแหน่งตัวเลขบนหน้าจอเครื่องวัดความดันโลหิตให้อยู่ในกรอบ และมีแสงสว่างเพียงพอ</p>
+          </div>
+
+          <!-- Controls Button Panel -->
+          <div class="flex flex-wrap gap-3">
+            <button id="btnStart" class="flex-1 bg-slate-900 hover:bg-slate-800 text-white font-semibold py-2.5 px-4 rounded-lg transition duration-150 flex items-center justify-center gap-2">
+              <svg class="w-5 h-5 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+              </svg>
+              เปิดกล้อง
+            </button>
+            <button id="btnCapture" disabled class="flex-1 bg-teal-600 hover:bg-teal-700 disabled:bg-slate-200 disabled:text-slate-400 text-white font-semibold py-2.5 px-4 rounded-lg transition duration-150 flex items-center justify-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+              </svg>
+              ถ่ายภาพ
+            </button>
+            <button id="btnStop" disabled class="bg-rose-600 hover:bg-rose-700 disabled:bg-slate-200 disabled:text-slate-400 text-white font-semibold py-2.5 px-4 rounded-lg transition duration-150" title="ปิดกล้อง">
+              ปิดกล้อง
+            </button>
+          </div>
+
+          <!-- File upload fallback -->
+          <div class="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-sm font-medium text-slate-600">หรือ อัปโหลดรูปภาพจากอุปกรณ์:</span>
+            <label class="cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold py-1.5 px-3 rounded-lg border border-slate-300 transition text-sm">
+              เลือกไฟล์
+              <input type="file" id="fileInput" accept="image/*" class="hidden">
+            </label>
+          </div>
+        </div>
+
+        <!-- OCR Pre-processed image viewer for validation -->
+        <div id="debugCard" class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hidden">
+          <h3 class="text-sm font-semibold text-slate-800 mb-3">ภาพประมวลผลเพื่อการปรับแต่ง (Grayscale/Contrast Tuning)</h3>
+          <div class="bg-slate-100 border border-slate-200 rounded-lg overflow-hidden flex justify-center items-center p-4">
+            <canvas id="debugCanvas" class="max-w-full max-h-[260px] object-contain rounded shadow-inner"></canvas>
+          </div>
+          <p class="text-xs text-slate-500 mt-2">ภาพที่ผ่านการกรองความเข้มเพื่อการสแกนด้วย Tesseract OCR ในบราวเซอร์</p>
+        </div>
+      </div>
+      
+      <!-- Right Column: Scan & User Details Forms -->
+      <div class="space-y-6">
+        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+          <h2 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+            </svg>
+            ผลลัพธ์และการบันทึกข้อมูล
+          </h2>
+
+          <!-- OCR Processing Progress -->
+          <div id="ocrProgressPanel" class="hidden bg-slate-50 border border-slate-200 p-4 rounded-lg mb-6">
+            <div class="flex justify-between items-center text-xs font-semibold text-slate-600 mb-1">
+              <span>กำลังดึงข้อมูลตัวเลขผ่านระบบ OCR...</span>
+              <span id="ocrPercent">0%</span>
+            </div>
+            <div class="w-full bg-slate-200 rounded-full h-2">
+              <div id="ocrProgressBar" class="bg-teal-500 h-2 rounded-full transition-all duration-150" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <!-- Result Fields Grid -->
+          <div class="grid grid-cols-3 gap-4 mb-6">
+            <div class="bg-slate-50 border border-slate-200 rounded-lg p-3 text-center transition-all duration-200 kv-box" id="sysBox">
+              <span class="text-xs font-semibold text-slate-500 block">SYS (ตัวบน)</span>
+              <span id="txtSYS" class="text-2xl font-bold text-slate-900 block my-1">--</span>
+              <input type="number" id="editSYS" min="10" max="300" placeholder="กรอกเอง" class="w-full border border-slate-300 rounded text-center py-1 text-sm bg-white focus:outline-none focus:border-teal-500 font-medium">
+            </div>
+            <div class="bg-slate-50 border border-slate-200 rounded-lg p-3 text-center transition-all duration-200 kv-box" id="diaBox">
+              <span class="text-xs font-semibold text-slate-500 block">DIA (ตัวล่าง)</span>
+              <span id="txtDIA" class="text-2xl font-bold text-slate-900 block my-1">--</span>
+              <input type="number" id="editDIA" min="10" max="250" placeholder="กรอกเอง" class="w-full border border-slate-300 rounded text-center py-1 text-sm bg-white focus:outline-none focus:border-teal-500 font-medium">
+            </div>
+            <div class="bg-slate-50 border border-slate-200 rounded-lg p-3 text-center transition-all duration-200 kv-box" id="pulseBox">
+              <span class="text-xs font-semibold text-slate-500 block">PULSE (ชีพจร)</span>
+              <span id="txtPULSE" class="text-2xl font-bold text-slate-900 block my-1">--</span>
+              <input type="number" id="editPULSE" min="10" max="250" placeholder="กรอกเอง" class="w-full border border-slate-300 rounded text-center py-1 text-sm bg-white focus:outline-none focus:border-teal-500 font-medium">
+            </div>
+          </div>
+
+          <!-- Real-Time Interpretation Alert Card -->
+          <div id="interpCard" class="hidden border rounded-lg p-4 mb-6 transition-colors duration-250">
+            <h3 id="interpTitle" class="font-bold text-sm"></h3>
+            <p id="interpSub" class="text-xs font-semibold opacity-75 mt-0.5"></p>
+            <p id="interpDetail" class="text-xs mt-2"></p>
+            <p id="interpAction" class="text-xs font-bold mt-2 border-t border-black/5 pt-2"></p>
+            <ul id="interpTips" class="text-xs list-disc pl-4 mt-2 space-y-1 opacity-90"></ul>
+          </div>
+
+          <!-- User Identity Form -->
+          <div class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label for="patientName" class="block text-xs font-semibold text-slate-700 mb-1 flex items-center justify-between">
+                  <span>ชื่อผู้ป่วย *</span>
+                  <button type="button" id="btnFaceLogin" class="text-teal-600 hover:text-teal-700 font-bold flex items-center gap-1 text-[11px]">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"></path>
+                    </svg>
+                    สแกนใบหน้าเข้าใช้
+                  </button>
+                </label>
+                <input type="text" id="patientName" list="nameList" placeholder="พิมพ์หรือเลือกรายชื่อ" class="w-full border border-slate-300 rounded-lg py-2 px-3 text-sm focus:outline-none focus:border-teal-500">
+                <datalist id="nameList"></datalist>
+              </div>
+              
+              <div>
+                <label for="patientID" class="block text-xs font-semibold text-slate-700 mb-1">รหัสประจำตัว (ID) *</label>
+                <input type="text" id="patientID" list="idList" placeholder="กรอกหรือเลือก ID" class="w-full border border-slate-300 rounded-lg py-2 px-3 text-sm focus:outline-none focus:border-teal-500">
+                <datalist id="idList"></datalist>
+              </div>
+            </div>
+
+            <!-- Health Context Metadata Fields -->
+            <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 space-y-3">
+              <span class="text-xs font-bold text-slate-700 block border-b border-slate-200 pb-1">ข้อมูลบริบทร่วมก่อนวัด</span>
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label for="postureSelect" class="block text-[11px] font-semibold text-slate-600 mb-1">ท่าทางในการวัด</label>
+                  <select id="postureSelect" class="w-full border border-slate-300 rounded-lg py-1.5 px-2 text-xs bg-white focus:outline-none focus:border-teal-500">
+                    <option value="">— เลือกท่าทาง —</option>
+                    <option value="sitting">นั่ง</option>
+                    <option value="lying">นอน</option>
+                    <option value="standing">ยืน</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="armSelect" class="block text-[11px] font-semibold text-slate-600 mb-1">วัดที่แขนข้างใด</label>
+                  <select id="armSelect" class="w-full border border-slate-300 rounded-lg py-1.5 px-2 text-xs bg-white focus:outline-none focus:border-teal-500">
+                    <option value="">— เลือกข้างแขน —</option>
+                    <option value="left">แขนซ้าย</option>
+                    <option value="right">แขนขวา</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div>
+                <label for="preBehavior" class="block text-[11px] font-semibold text-slate-600 mb-1">พฤติกรรมก่อนทำการวัด</label>
+                <input type="text" id="preBehavior" placeholder="เช่น ดื่มกาแฟ, สูบบุหรี่, พักมา 5 นาที" class="w-full border border-slate-300 rounded-lg py-1.5 px-3.5 text-xs focus:outline-none focus:border-teal-500">
+              </div>
+              
+              <div>
+                <label for="symptoms" class="block text-[11px] font-semibold text-slate-600 mb-1">อาการร่วมแปลกปลอม</label>
+                <input type="text" id="symptoms" placeholder="เช่น ปวดหัว, หน้ามืด, เจ็บหน้าอก, ปกติ" class="w-full border border-slate-300 rounded-lg py-1.5 px-3.5 text-xs focus:outline-none focus:border-teal-500">
+              </div>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="flex gap-3 pt-2">
+              <button id="btnCancel" class="flex-1 border border-slate-300 hover:bg-slate-100 text-slate-700 py-2.5 rounded-lg transition text-sm font-semibold">ยกเลิก</button>
+              <button id="btnSave" disabled class="flex-[2] bg-teal-600 hover:bg-teal-700 disabled:bg-slate-200 disabled:text-slate-400 text-white font-semibold py-2.5 rounded-lg transition duration-150 text-sm flex items-center justify-center gap-2">
+                บันทึกค่าลงประวัติ
+              </button>
+            </div>
+            
+            <div id="statusMessage" class="text-xs font-semibold text-center mt-2 text-slate-500">รอการประมวลผลหรือนำเข้ารูปภาพ...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Face Login Scanner Modal -->
+  <div id="faceLoginModal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl max-w-md w-full border border-slate-200 shadow-xl overflow-hidden">
+      <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+        <h3 class="font-bold text-slate-900">👤 จำแนกใบหน้าเพื่อดึงข้อมูล</h3>
+        <button id="faceLoginClose" class="text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
+      </div>
+      
+      <div class="p-5 space-y-4">
+        <!-- Live Video Area -->
+        <div class="relative bg-slate-950 aspect-square rounded-lg overflow-hidden border border-slate-800 flex items-center justify-center">
+          <video id="faceLoginVideo" autoplay playsinline muted class="w-full h-full object-cover scale-x-[-1]"></video>
+          <div class="absolute inset-[15%] border-2 border-teal-400 rounded-full pointer-events-none box-shadow-ellipse border-dashed"></div>
+          <div id="faceLoginHint" class="absolute bottom-4 bg-slate-900/85 text-xs text-white px-3 py-1 rounded-full text-center">กำลังเปิดกล้อง...</div>
+        </div>
+        
+        <!-- Matching Result Panel -->
+        <div id="faceMatchResult" class="hidden bg-emerald-50 border border-emerald-200 p-4 rounded-lg">
+          <div class="flex items-center gap-3">
+            <div class="bg-emerald-500 p-1.5 rounded-full text-white">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 9L19 7"></path>
+              </svg>
+            </div>
+            <div>
+              <span class="text-xs text-emerald-600 font-bold block">ตรวจพบโปรไฟล์ที่ตรงกัน</span>
+              <strong id="faceMatchName" class="text-slate-900 text-sm block">--</strong>
+              <span id="faceMatchId" class="text-xs text-slate-500 block">ID: --</span>
+            </div>
+          </div>
+          <div class="flex gap-2 mt-3">
+            <button id="faceConfirmBtn" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-1.5 rounded text-xs transition">ใช่ ฉันเอง</button>
+            <button id="faceRetryBtn" class="flex-1 border border-emerald-300 hover:bg-emerald-100 text-emerald-700 font-semibold py-1.5 rounded text-xs transition">สแกนใหม่</button>
+          </div>
+        </div>
+        
+        <div id="faceStatus" class="text-xs text-center font-medium text-slate-500">กรุณามองตรงให้ใบหน้าอยู่เต็มวงกลมระบบจะเปรียบเทียบอัตโนมัติ</div>
+        
+        <div class="flex gap-2">
+          <button id="faceModalCloseBtn" class="flex-1 border border-slate-300 py-2 rounded-lg text-sm text-slate-700 font-semibold hover:bg-slate-50">ปิดหน้าต่าง</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <canvas id="hiddenCanvas" class="hidden"></canvas>
+  <footer class="bg-slate-900 text-slate-400 text-center py-6 border-t border-slate-800 text-xs mt-12">
+    © 2026 วิทยาลัยเทคนิคสมุทรสงคราม · การศึกษาเพื่อพัฒนาชุมชนและการแพทย์ทางไกล
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/db.js"></script>
+  <script src="js/ocr.js"></script>
+  <script src="js/face.js"></script>
+  <script src="js/notifications.js"></script>
+
+  <script>
+    // Elements references
+    const fileInput = document.getElementById('fileInput');
+    const preview = document.getElementById('preview');
+    const video = document.getElementById('video');
+    const btnStart = document.getElementById('btnStart');
+    const btnCapture = document.getElementById('btnCapture');
+    const btnStop = document.getElementById('btnStop');
+    const cameraBadge = document.getElementById('cameraBadge');
+    const debugCard = document.getElementById('debugCard');
+    const debugCanvas = document.getElementById('debugCanvas');
+    const hiddenCanvas = document.getElementById('hiddenCanvas');
+    
+    const ocrProgressPanel = document.getElementById('ocrProgressPanel');
+    const ocrProgressBar = document.getElementById('ocrProgressBar');
+    const ocrPercent = document.getElementById('ocrPercent');
+    
+    const txtSYS = document.getElementById('txtSYS');
+    const txtDIA = document.getElementById('txtDIA');
+    const txtPULSE = document.getElementById('txtPULSE');
+    const editSYS = document.getElementById('editSYS');
+    const editDIA = document.getElementById('editDIA');
+    const editPULSE = document.getElementById('editPULSE');
+    
+    const interpCard = document.getElementById('interpCard');
+    const interpTitle = document.getElementById('interpTitle');
+    const interpSub = document.getElementById('interpSub');
+    const interpDetail = document.getElementById('interpDetail');
+    const interpAction = document.getElementById('interpAction');
+    const interpTips = document.getElementById('interpTips');
+    
+    const nameList = document.getElementById('nameList');
+    const idList = document.getElementById('idList');
+    const patientName = document.getElementById('patientName');
+    const patientID = document.getElementById('patientID');
+    const postureSelect = document.getElementById('postureSelect');
+    const armSelect = document.getElementById('armSelect');
+    const preBehavior = document.getElementById('preBehavior');
+    const symptoms = document.getElementById('symptoms');
+    
+    const btnCancel = document.getElementById('btnCancel');
+    const btnSave = document.getElementById('btnSave');
+    const statusMessage = document.getElementById('statusMessage');
+    
+    // Face login elements
+    const btnFaceLogin = document.getElementById('btnFaceLogin');
+    const faceLoginModal = document.getElementById('faceLoginModal');
+    const faceLoginClose = document.getElementById('faceLoginClose');
+    const faceLoginVideo = document.getElementById('faceLoginVideo');
+    const faceLoginHint = document.getElementById('faceLoginHint');
+    const faceStatus = document.getElementById('faceStatus');
+    const faceMatchResult = document.getElementById('faceMatchResult');
+    const faceMatchName = document.getElementById('faceMatchName');
+    const faceMatchId = document.getElementById('faceMatchId');
+    const faceConfirmBtn = document.getElementById('faceConfirmBtn');
+    const faceRetryBtn = document.getElementById('faceRetryBtn');
+    const faceModalCloseBtn = document.getElementById('faceModalCloseBtn');
+
+    let stream = null;
+    let faceStream = null;
+    let faceTimer = null;
+    let activeMatchedUser = null;
+    let lastSpeechKey = '';
+    let cachedVoice = null;
+    let exactIdentityVerified = false;
+
+    // Set status message helper
+    function setStatus(msg, isError = false) {
+      statusMessage.textContent = msg;
+      statusMessage.className = `text-xs font-semibold text-center mt-2 ${isError ? 'text-rose-600' : 'text-slate-600'}`;
+    }
+
+    // Refresh datalists for names/IDs
+    function loadUsersDropdown() {
+      if (typeof db === 'undefined') return;
+      const users = db.getUsers();
+      nameList.innerHTML = '';
+      idList.innerHTML = '';
+      users.forEach(u => {
+        const nameOpt = document.createElement('option');
+        nameOpt.value = u.full_name;
+        nameList.appendChild(nameOpt);
+        
+        const idOpt = document.createElement('option');
+        idOpt.value = u.user_id;
+        idList.appendChild(idOpt);
+      });
+    }
+
+    // Text to speech helpers (Thai female)
+    function getThaiFemaleVoice() {
+      if (!('speechSynthesis' in window)) return null;
+      if (cachedVoice) return cachedVoice;
+      const voices = window.speechSynthesis.getVoices() || [];
+      if (!voices.length) return null;
+      const thVoices = voices.filter(v => (v.lang || '').toLowerCase().startsWith('th'));
+      const femaleKeywords = /female|หญิง|woman|girl/i;
+      const pickFemale = thVoices.find(v => femaleKeywords.test(v.name || v.voiceURI || ''));
+      cachedVoice = pickFemale || thVoices[0] || null;
+      return cachedVoice;
+    }
+
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.onvoiceschanged = () => { cachedVoice = null; };
+    }
+
+    // Camera opening/closing functions
+    btnStart.addEventListener('click', async () => {
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+        video.srcObject = stream;
+        video.play();
+        cameraBadge.textContent = "กล้องสตรีมสด";
+        cameraBadge.className = "absolute top-3 left-3 bg-emerald-600/90 backdrop-blur-sm text-xs font-semibold px-2 py-1 rounded text-white border border-emerald-500 animate-pulse";
+        btnStart.disabled = true;
+        btnCapture.disabled = false;
+        btnStop.disabled = false;
+        setStatus("เปิดกล้องสำเร็จ จัดการภาพให้ชัดเจน");
+      } catch (e) {
+        setStatus("ไม่สามารถเปิดกล้อง: " + e.message, true);
+      }
+    });
+
+    btnStop.addEventListener('click', () => {
+      stopCamera();
+    });
+
+    function stopCamera() {
+      if (stream) {
+        stream.getTracks().forEach(t => t.stop());
+        stream = null;
+      }
+      video.srcObject = null;
+      cameraBadge.textContent = "กล้องปิดอยู่";
+      cameraBadge.className = "absolute top-3 left-3 bg-slate-900/80 backdrop-blur-sm text-xs font-semibold px-2 py-1 rounded text-slate-300 border border-slate-700";
+      btnStart.disabled = false;
+      btnCapture.disabled = true;
+      btnStop.disabled = true;
+    }
+
+    // Capture photo from video stream
+    btnCapture.addEventListener('click', async () => {
+      if (!stream) return;
+      
+      const vw = video.videoWidth || 640;
+      const vh = video.videoHeight || 480;
+      hiddenCanvas.width = vw;
+      hiddenCanvas.height = vh;
+      const ctx = hiddenCanvas.getContext('2d');
+      ctx.drawImage(video, 0, 0, vw, vh);
+      
+      const blob = await new Promise(resolve => hiddenCanvas.toBlob(resolve, 'image/jpeg', 0.92));
+      const url = URL.createObjectURL(blob);
+      
+      preview.src = url;
+      preview.classList.remove('hidden');
+      stopCamera();
+      
+      await processImageForOCR(preview);
+    });
+
+    // File Input change listener
+    fileInput.addEventListener('change', async (e) => {
+      if (!e.target.files || !e.target.files[0]) return;
+      const file = e.target.files[0];
+      const url = URL.createObjectURL(file);
+      preview.src = url;
+      preview.classList.remove('hidden');
+      stopCamera();
+      
+      await processImageForOCR(preview);
+      fileInput.value = ''; // Reset
+    });
+
+    // Process image & trigger OCR
+    async function processImageForOCR(imageElement) {
+      setStatus("กำลังประมวลผลภาพก่อนอ่านค่า...");
+      debugCard.classList.remove('hidden');
+      
+      // Run pre-processing
+      const processedDataUrl = ocr.preprocessImage(imageElement, debugCanvas);
+      
+      // Setup progress UI
+      ocrProgressPanel.classList.remove('hidden');
+      ocrProgressBar.style.width = '0%';
+      ocrPercent.textContent = '0%';
+      
+      try {
+        const results = await ocr.runOCR(processedDataUrl, (progress) => {
+          ocrProgressBar.style.width = `${progress}%`;
+          ocrPercent.textContent = `${progress}%`;
+        });
+        
+        ocrProgressPanel.classList.add('hidden');
+        
+        // Show values
+        txtSYS.textContent = results.SYS || '--';
+        txtDIA.textContent = results.DIA || '--';
+        txtPULSE.textContent = results.PULSE || '--';
+        
+        editSYS.value = results.SYS || '';
+        editDIA.value = results.DIA || '';
+        editPULSE.value = results.PULSE || '';
+        
+        updateBPLevels();
+        
+        if (results.SYS && results.DIA && results.PULSE) {
+          setStatus("สแกนตัวเลขสำเร็จ โปรดป้อนรายชื่อผู้ป่วยเพื่อบันทึก");
+        } else {
+          setStatus("ดึงข้อมูลตัวเลขไม่สมบูรณ์ โปรดตรวจทานหรือกรอกค่าด้วยมือในช่องว่าง", true);
+        }
+        
+      } catch (e) {
+        console.error(e);
+        ocrProgressPanel.classList.add('hidden');
+        setStatus("เกิดข้อผิดพลาดในการสแกน: " + e.message + " โปรดป้อนตัวเลขด้วยตนเอง", true);
+      }
+    }
+
+    // Monitor manual changes
+    [editSYS, editDIA, editPULSE].forEach(input => {
+      input.addEventListener('input', () => {
+        txtSYS.textContent = editSYS.value || '--';
+        txtDIA.textContent = editDIA.value || '--';
+        txtPULSE.textContent = editPULSE.value || '--';
+        updateBPLevels();
+      });
+    });
+
+    // Update BP Risk levels visually and textually
+    function updateBPLevels() {
+      const sys = parseInt(editSYS.value, 10);
+      const dia = parseInt(editDIA.value, 10);
+      const pulse = parseInt(editPULSE.value, 10);
+      
+      const sysBox = document.getElementById('sysBox');
+      const diaBox = document.getElementById('diaBox');
+      const pulseBox = document.getElementById('pulseBox');
+      
+      // Reset classes
+      sysBox.className = "bg-slate-50 border border-slate-200 rounded-lg p-3 text-center transition-all duration-200 kv-box";
+      diaBox.className = "bg-slate-50 border border-slate-200 rounded-lg p-3 text-center transition-all duration-200 kv-box";
+      pulseBox.className = "bg-slate-50 border border-slate-200 rounded-lg p-3 text-center transition-all duration-200 kv-box";
+      
+      if (isNaN(sys) || isNaN(dia) || isNaN(pulse)) {
+        interpCard.classList.add('hidden');
+        btnSave.disabled = true;
+        return;
+      }
+      
+      // Assign visual coloring classes
+      const getSysLevelClass = (v) => {
+        if (v >= 180) return 'level-danger';
+        if (v >= 140) return 'level-high';
+        if (v >= 130) return 'level-mid';
+        if (v >= 120) return 'level-adjust';
+        if (v >= 90) return 'level-good';
+        return 'level-low';
+      };
+      
+      const getDiaLevelClass = (v) => {
+        if (v >= 110) return 'level-danger';
+        if (v >= 90) return 'level-high';
+        if (v >= 80) return 'level-mid';
+        if (v >= 60) return 'level-good';
+        return 'level-low';
+      };
+      
+      const getPulseLevelClass = (v) => {
+        if (v > 100) return 'level-danger';
+        if (v >= 60) return 'level-good';
+        return 'level-low';
+      };
+      
+      sysBox.classList.add(getSysLevelClass(sys));
+      diaBox.classList.add(getDiaLevelClass(dia));
+      pulseBox.classList.add(getPulseLevelClass(pulse));
+      
+      // Calculate interpretation card contents (aligned with db.js thresholds & guides)
+      const details = interpretBP(sys, dia, pulse);
+      
+      interpCard.className = `border rounded-xl p-4 mb-6 transition-colors duration-250 ${
+        details.level === 'danger' ? 'bg-red-50 border-red-200 text-red-900' :
+        details.level === 'high' ? 'bg-red-50/70 border-red-100 text-red-900' :
+        details.level === 'mid' ? 'bg-orange-50 border-orange-200 text-orange-900' :
+        details.level === 'adjust' ? 'bg-yellow-50 border-yellow-200 text-yellow-900' :
+        details.level === 'low' ? 'bg-blue-50 border-blue-200 text-blue-900' :
+        'bg-green-50 border-green-200 text-green-900'
+      }`;
+      
+      interpTitle.textContent = details.title;
+      interpSub.textContent = details.sub;
+      interpDetail.textContent = details.detail;
+      interpAction.textContent = `คำแนะนำแพทย์: ${details.action}`;
+      
+      interpTips.innerHTML = '';
+      details.adviceTips.forEach(tip => {
+        const li = document.createElement('li');
+        li.textContent = tip;
+        interpTips.appendChild(li);
+      });
+      
+      interpCard.classList.remove('hidden');
+      speakInterpretation(details, sys, dia, pulse);
+      validateForm();
+    }
+
+    // Blood pressure logic interpreter
+    function interpretBP(sys, dia, pulse) {
+      let card = {
+        title: '',
+        sub: '',
+        detail: '',
+        action: '',
+        level: 'good',
+        adviceTips: []
+      };
+
+      if (sys >= 180 || dia >= 110) {
+        card.level = 'danger';
+        card.title = '🔴 ภาวะความดันโลหิตสูงขั้นรุนแรง (วิกฤต)';
+        card.sub = 'SYS ≥180 หรือ DIA ≥110 mmHg';
+        card.detail = 'อาจมีอาการนำปวดศีรษะรุนแรง หายใจลำบาก หรือตามัวเฉียบพลัน';
+        card.action = 'ควรรีบพบแพทย์หรือไปโรงพยาบาลฉุกเฉินทันที';
+        card.adviceTips = [
+          'หลีกเลี่ยงการออกกำลังหรือเคลื่อนไหวร่างกายหนัก',
+          'นั่งพักในท่านั่งที่ผ่อนคลายและระบายอากาศสะดวก',
+          'รีบขอความช่วยเหลือทางการแพทย์ทันที'
+        ];
+      }
+      else if (sys >= 140 || dia >= 90) {
+        card.level = 'high';
+        card.title = '🟠 ความดันโลหิตสูง ระยะที่ 2';
+        card.sub = 'SYS 140–179 หรือ DIA 90–109 mmHg';
+        card.detail = 'บ่งชี้ความเสี่ยงต่อโรคหลอดเลือดสมองและโรคหัวใจที่เพิ่มขึ้นอย่างมาก';
+        card.action = 'ควรไปพบแพทย์เพื่อตรวจประเมินและวินิจฉัยอย่างเป็นทางการ';
+        card.adviceTips = [
+          'งดทานเค็มและจำกัดโซเดียมเด็ดขาด เลี่ยงอาหารกึ่งสำเร็จรูป',
+          'ออกกำลังกายเบา ๆ สม่ำเสมอ เช่น เดินเร็ว 30 นาที/วัน',
+          'งดการสูบบุหรี่และเครื่องดื่มแอลกอฮอล์'
+        ];
+      }
+      else if ((sys >= 130 && sys <= 139) || (dia >= 80 && dia <= 89)) {
+        card.level = 'mid';
+        card.title = '🟠 ความดันโลหิตสูง ระยะที่ 1';
+        card.sub = 'SYS 130–139 หรือ DIA 80–89 mmHg';
+        card.detail = 'ความดันเริ่มสะสมสูงขึ้น ควรปรับระดับการรับประทานอาหารและติดตามผล';
+        card.action = 'ควรปรับเปลี่ยนพฤติกรรมสุขภาพและเฝ้าระวังต่อเนื่อง';
+        card.adviceTips = [
+          'ควบคุมน้ำหนักหากดัชนีมวลกายเกินเกณฑ์',
+          'นอนหลับพักผ่อนให้เพียงพอ 7-8 ชั่วโมง/วัน',
+          'บันทึกค่าความดันเช้า-เย็นสม่ำเสมอเพื่อเปรียบเทียบ'
+        ];
+      }
+      else if (sys >= 120 && sys <= 129 && dia < 80) {
+        card.level = 'adjust';
+        card.title = '🟡 ความดันโลหิตค่อนข้างสูง';
+        card.sub = 'SYS 120–129 และ DIA < 80 mmHg';
+        card.detail = 'เริ่มมีความโน้มเอียงสูงกว่าเกณฑ์ปกติ เฝ้าระวังการปรับชีวิตประจำวัน';
+        card.action = 'ปรับเปลี่ยนพฤติกรรมเบื้องต้นเพื่อป้องกันโรคความดันสูง';
+        card.adviceTips = [
+          'ลดปริมาณเกลือแกง ซอสปรุงรสในอาหารประจำวัน',
+          'ออกกำลังกายแบบแอโรบิกต่อเนื่อง',
+          'ลดระดับความเครียดจากการทำงานหรือสะสม'
+        ];
+      }
+      else if (sys < 90 && dia < 60) {
+        card.level = 'low';
+        card.title = '🔵 ความดันโลหิตต่ำ';
+        card.sub = 'SYS < 90 หรือ DIA < 60 mmHg';
+        card.detail = 'อาจส่งผลให้มีอาการมึนศีรษะ หน้ามืดขณะเปลี่ยนท่าทางกระทันหัน';
+        card.action = 'ดื่มน้ำมากขึ้น พักผ่อนให้เพียงพอ หากหน้ามืดบ่อยควรพบแพทย์';
+        card.adviceTips = [
+          'ลุกขึ้นจากท่านั่งหรือนอนช้า ๆ เพื่อให้ความดันปรับตัว',
+          'ดื่มน้ำสะอาดเฉลี่ย 2.5 ลิตรต่อวัน',
+          'เลี่ยงการยืนทรงตัวกลางแดดร้อนหรือสถานที่อับอากาศนาน'
+        ];
+      }
+      else {
+        card.level = 'good';
+        card.title = '🟢 ความดันโลหิตปกติ';
+        card.sub = 'SYS < 120 และ DIA < 80 mmHg';
+        card.detail = 'สุขภาพหลอดเลือดและหัวใจอยู่ในเกณฑ์ที่ดีมาก';
+        card.action = 'รักษาพฤติกรรมสุขภาพที่ดีไว้ ตรวจวัดความดันประจำทุกปี';
+        card.adviceTips = [
+          'รับประทานผักผลไม้ และปลาไขมันต่ำสม่ำเสมอ',
+          'ออกกำลังกายสม่ำเสมอเป็นประจำ',
+          'ตรวจเช็กความดันโลหิตเป็นครั้งคราวเพื่อสอดส่อง'
+        ];
+      }
+
+      return card;
+    }
+
+    // Speak announcement in Thai
+    function speakInterpretation(details, sys, dia, pulse) {
+      if (!('speechSynthesis' in window)) return;
+      const key = `${details.level}|${sys}|${dia}|${pulse}`;
+      if (key === lastSpeechKey) return;
+      
+      const cleanTitle = (details.title || '').replace(/^[^ก-๙A-Za-z0-9]+/, '').trim();
+      const text = `ผลการวัดความดันโลหิตของคุณอยู่ในระดับ ${cleanTitle} ค่าความดันโลหิตคือ ตัวบน ${sys} มิลลิเมตรปรอท ตัวล่าง ${dia} มิลลิเมตรปรอท อัตราการเต้นของหัวใจ ${pulse} ครั้งต่อนาที คำแนะนำแพทย์คือ ${details.action}`;
+      
+      try {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'th-TH';
+        utterance.rate = 1.0;
+        utterance.pitch = 1.0;
+        
+        const voice = getThaiFemaleVoice();
+        if (voice) utterance.voice = voice;
+        
+        window.speechSynthesis.speak(utterance);
+        lastSpeechKey = key;
+      } catch (err) {
+        console.warn("Speech failed:", err);
+      }
+    }
+
+    // Auto-fill and validation checks
+    function validateForm() {
+      const sys = parseInt(editSYS.value, 10);
+      const dia = parseInt(editDIA.value, 10);
+      const pulse = parseInt(editPULSE.value, 10);
+      
+      const name = patientName.value.trim();
+      const id = patientID.value.trim();
+      
+      const valuesOk = !isNaN(sys) && sys > 0 && !isNaN(dia) && dia > 0 && !isNaN(pulse) && pulse > 0;
+      const identityOk = name.length > 0 && id.length > 0 && exactIdentityVerified;
+      
+      btnSave.disabled = !(valuesOk && identityOk);
+      
+      if (!valuesOk) {
+        setStatus("กรุณากรอกตัวเลข SYS/DIA/PULSE ให้ครบถ้วน", true);
+      } else if (!identityOk) {
+        if (!exactIdentityVerified && name && id) {
+          setStatus("ชื่อและรหัสผู้ป่วยไม่สัมพันธ์กันในทะเบียน กรุณาตรวจความถูกต้อง", true);
+        } else {
+          setStatus("โปรดระบุรายชื่อและรหัสประจำตัวผู้ป่วยให้ถูกต้องเพื่อบันทึก");
+        }
+      } else {
+        setStatus("ข้อมูลพร้อมสำหรับการบันทึกประวัติ");
+      }
+    }
+
+    async function checkIdentityLink() {
+      const name = patientName.value.trim();
+      const id = patientID.value.trim();
+      
+      if (!name || !id) {
+        exactIdentityVerified = false;
+        validateForm();
+        return;
+      }
+      
+      const user = db.getUserById(id);
+      if (user && user.full_name.trim() === name) {
+        exactIdentityVerified = true;
+        setStatus("ยืนยันตัวตนในระบบเรียบร้อย");
+      } else {
+        exactIdentityVerified = false;
+      }
+      validateForm();
+    }
+
+    // Auto-fill logic
+    patientName.addEventListener('input', () => {
+      const name = patientName.value.trim();
+      if (!name) {
+        patientID.value = '';
+        exactIdentityVerified = false;
+        validateForm();
+        return;
+      }
+      
+      const user = db.getUserByName(name);
+      if (user) {
+        patientID.value = user.user_id;
+        exactIdentityVerified = true;
+      } else {
+        exactIdentityVerified = false;
+      }
+      validateForm();
+    });
+
+    patientID.addEventListener('input', () => {
+      const id = patientID.value.trim();
+      if (!id) {
+        patientName.value = '';
+        exactIdentityVerified = false;
+        validateForm();
+        return;
+      }
+      
+      const user = db.getUserById(id);
+      if (user) {
+        patientName.value = user.full_name;
+        exactIdentityVerified = true;
+      } else {
+        exactIdentityVerified = false;
+      }
+      validateForm();
+    });
+
+    patientName.addEventListener('change', checkIdentityLink);
+    patientID.addEventListener('change', checkIdentityLink);
+
+    // Save BP Record
+    btnSave.addEventListener('click', async () => {
+      const sys = parseInt(editSYS.value, 10);
+      const dia = parseInt(editDIA.value, 10);
+      const pulse = parseInt(editPULSE.value, 10);
+      const name = patientName.value.trim();
+      const id = patientID.value.trim();
+      
+      if (!exactIdentityVerified) {
+        setStatus("ข้อมูลความปลอดภัยผู้ใช้ไม่ตรงกัน ไม่สามารถบันทึกได้", true);
+        return;
+      }
+      
+      const record = {
+        timestamp: new Date().toISOString().replace('T', ' ').substring(0, 16),
+        patient_id: id,
+        name: name,
+        SYS: sys,
+        DIA: dia,
+        PULSE: pulse,
+        posture: postureSelect.value,
+        arm: armSelect.value,
+        pre_measure_behavior: preBehavior.value.trim(),
+        symptoms: symptoms.value.trim()
+      };
+      
+      try {
+        db.saveRecord(record);
+        setStatus("บันทึกประวัติสุขภาพความดันโลหิตเรียบร้อยแล้ว!");
+        
+        // Trigger webhooks notifications
+        await notifications.triggerAllNotifications(record);
+        
+        const ok = confirm("บันทึกข้อมูลเรียบร้อยแล้ว ต้องการดูประวัติและกราฟแนวโน้มเลยหรือไม่?");
+        if (ok) {
+          window.location.href = `history.html?name=${encodeURIComponent(name)}`;
+        } else {
+          clearForm();
+        }
+      } catch (e) {
+        setStatus("เกิดข้อผิดพลาดในการบันทึก: " + e.message, true);
+      }
+    });
+
+    // Cancel / Clear Form
+    btnCancel.addEventListener('click', () => {
+      clearForm();
+      setStatus("ยกเลิกผลการตรวจจับ ล้างแบบฟอร์มเรียบร้อย");
+    });
+
+    function clearForm() {
+      txtSYS.textContent = '--';
+      txtDIA.textContent = '--';
+      txtPULSE.textContent = '--';
+      editSYS.value = '';
+      editDIA.value = '';
+      editPULSE.value = '';
+      patientName.value = '';
+      patientID.value = '';
+      postureSelect.value = '';
+      armSelect.value = '';
+      preBehavior.value = '';
+      symptoms.value = '';
+      preview.src = '';
+      preview.classList.add('hidden');
+      debugCard.classList.add('hidden');
+      ocrProgressPanel.classList.add('hidden');
+      interpCard.classList.add('hidden');
+      exactIdentityVerified = false;
+      btnSave.disabled = true;
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    }
+
+    // --- Face Login Scanner Logics ---
+    btnFaceLogin.addEventListener('click', async () => {
+      faceLoginModal.classList.remove('hidden');
+      faceMatchResult.classList.add('hidden');
+      faceStatus.textContent = "กำลังเชื่อมต่อกับกล้องเพื่อตรวจหาใบหน้า...";
+      
+      try {
+        faceStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+        faceLoginVideo.srcObject = faceStream;
+        faceLoginVideo.play();
+        
+        faceLoginHint.textContent = "มองตรงนิ่งๆ ภายในกรอบสีเขียว";
+        faceStatus.textContent = "เริ่มประมวลผลเปรียบเทียบในประวัติผู้ใช้...";
+        
+        // Poll for recognition every 1.5 seconds
+        faceTimer = setInterval(processFaceFrame, 1500);
+      } catch (err) {
+        faceStatus.textContent = "ไม่สามารถต่อกล้องหน้าได้: " + err.message;
+        faceLoginHint.textContent = "เกิดข้อผิดพลาดกล้อง";
+      }
+    });
+
+    async function processFaceFrame() {
+      if (!faceStream) return;
+      
+      const tempCanvas = document.createElement('canvas');
+      const croppedFaceUrl = face.cropFaceFromVideo(faceLoginVideo, tempCanvas);
+      
+      const registeredUsers = db.getUsers();
+      faceStatus.textContent = "วิเคราะห์รหัสภาพใบหน้า...";
+      
+      try {
+        const match = await face.identifyUser(croppedFaceUrl, registeredUsers, 18);
+        
+        if (match) {
+          clearInterval(faceTimer);
+          faceTimer = null;
+          
+          activeMatchedUser = match.user;
+          
+          faceMatchName.textContent = activeMatchedUser.full_name;
+          faceMatchId.textContent = `ID: ${activeMatchedUser.user_id}`;
+          faceMatchResult.classList.remove('hidden');
+          
+          faceStatus.textContent = "พบผู้ใช้งานที่สัมพันธ์กับใบหน้า!";
+          faceLoginHint.textContent = "สแกนสำเร็จ";
+        } else {
+          faceStatus.textContent = "ไม่พบใบหน้าที่ลงทะเบียน กรุณาหมุนหน้าเอียงซ้ายขวาช้าๆ";
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    // Face confirmations
+    faceConfirmBtn.addEventListener('click', () => {
+      if (activeMatchedUser) {
+        patientName.value = activeMatchedUser.full_name;
+        patientID.value = activeMatchedUser.user_id;
+        exactIdentityVerified = true;
+        validateForm();
+        setStatus(`จำใบหน้าได้: ${activeMatchedUser.full_name} และดึงข้อมูลแล้ว`);
+        closeFaceModal();
+      }
+    });
+
+    faceRetryBtn.addEventListener('click', () => {
+      faceMatchResult.classList.add('hidden');
+      activeMatchedUser = null;
+      faceStatus.textContent = "กำลังค้นหาใบหน้าใหม่...";
+      faceLoginHint.textContent = "มองตรงนิ่งๆ";
+      if (!faceTimer) {
+        faceTimer = setInterval(processFaceFrame, 1500);
+      }
+    });
+
+    faceLoginClose.addEventListener('click', closeFaceModal);
+    faceModalCloseBtn.addEventListener('click', closeFaceModal);
+
+    function closeFaceModal() {
+      if (faceTimer) {
+        clearInterval(faceTimer);
+        faceTimer = null;
+      }
+      if (faceStream) {
+        faceStream.getTracks().forEach(t => t.stop());
+        faceStream = null;
+      }
+      faceLoginVideo.srcObject = null;
+      faceLoginModal.classList.add('hidden');
+    }
+
+    // Startup Init
+    window.addEventListener('load', () => {
+      loadUsersDropdown();
+    });
+  </script>
+</body>
+</html>

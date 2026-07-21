@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เกณฑ์และคำอธิบาย - Smart BP Reader</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', 'Sarabun', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+  <!-- Header Section -->
+  <header class="bg-slate-900 text-white shadow-md border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="bg-teal-500 p-2 rounded-lg text-slate-900">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-xl font-bold tracking-tight">ระบบอ่านค่าความดันโลหิตด้วยปัญญาประดิษฐ์</h1>
+          <p class="text-xs text-slate-400">พัฒนาโดย วิทยาลัยเทคนิคสมุทรสงคราม (Smart BP Reader)</p>
+        </div>
+      </div>
+      
+      <!-- Navigation Links -->
+      <nav class="flex flex-wrap items-center gap-1 text-sm font-medium">
+        <a href="index.html" class="px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 hover:text-white transition">หน้าแรก</a>
+        <a href="history.html" class="px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 hover:text-white transition">ประวัติ/กราฟ</a>
+        <a href="guide.html" class="px-3 py-2 rounded-md bg-slate-800 text-teal-400 border border-slate-700">เกณฑ์/คำอธิบาย</a>
+        <a href="register.html" class="px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 hover:text-white transition">ลงทะเบียน</a>
+        <a href="profiles.html" class="px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 hover:text-white transition">โปรไฟล์ผู้ใช้</a>
+        <a href="management.html" class="ml-2 p-2 rounded-md hover:bg-slate-800 text-slate-400 hover:text-white transition" title="จัดการระบบ">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+          </svg>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content Shell -->
+  <main class="flex-grow max-w-4xl w-full mx-auto px-4 py-8 space-y-8">
+    
+    <!-- Explanation Card -->
+    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+      <h2 class="text-lg font-bold text-slate-900 mb-4">🩺 คำนิยามค่าความดันโลหิตและชีพจร</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+          <span class="inline-block bg-rose-600 text-white text-xs font-bold px-2 py-0.5 rounded mb-2">SYS</span>
+          <h3 class="font-bold text-slate-900 text-sm mb-1">ความดันโลหิตตัวบน (Systolic)</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">แรงดันของกระแสเลือดภายในหลอดเลือดแดงสูงสุดขณะที่หัวใจกำลังบีบตัวเพื่อส่งออกซิเจนไปหล่อเลี้ยงเซลล์ทั่วร่างกาย</p>
+        </div>
+        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+          <span class="inline-block bg-blue-600 text-white text-xs font-bold px-2 py-0.5 rounded mb-2">DIA</span>
+          <h3 class="font-bold text-slate-900 text-sm mb-1">ความดันโลหิตตัวล่าง (Diastolic)</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">แรงดันในหลอดเลือดแดงขณะที่หัวใจเริ่มคลายตัวลงเต็มที่ระหว่างช่วงที่หัวใจบีบแต่ละครั้ง</p>
+        </div>
+        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+          <span class="inline-block bg-emerald-600 text-white text-xs font-bold px-2 py-0.5 rounded mb-2">PULSE</span>
+          <h3 class="font-bold text-slate-900 text-sm mb-1">ชีพจร (Pulse Rate)</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">จำนวนครั้งที่หัวใจเต้นและบีบตัวขยายหลอดเลือดแดงในระยะเวลา 1 นาที มีหน่วยเป็นครั้งต่อนาที (bpm)</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Threshold Criteria Table -->
+    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+      <div class="mb-4">
+        <h2 class="text-lg font-bold text-slate-900">📊 ตารางเกณฑ์การประเมินความดันโลหิตในผู้ใหญ่</h2>
+        <p class="text-xs text-slate-500 mt-1">อ้างอิงมาตรฐานแนวทางเวชปฏิบัติการรักษาโรคความดันโลหิตสูงในประเทศไทย (Thai Hypertension 2019-2023)</p>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse text-sm">
+          <thead>
+            <tr class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
+              <th class="p-3">ระดับการแบ่ง</th>
+              <th class="p-3">SYS ตัวบน (mmHg)</th>
+              <th class="p-3">DIA ตัวล่าง (mmHg)</th>
+              <th class="p-3">การปฏิบัติตนและแนวทางเบื้องต้น</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100">
+            <tr class="hover:bg-slate-50">
+              <td class="p-3 font-semibold text-blue-600">🔵 ความดันโลหิตต่ำ</td>
+              <td class="p-3">&lt; 90</td>
+              <td class="p-3">&lt; 60</td>
+              <td class="p-3 text-xs text-slate-600">ดื่มน้ำสะอาดให้เพียงพอ พักผ่อน หากหน้ามืดบ่อยหรือลุกแล้วล้ม ให้ปรึกษาแพทย์</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="p-3 font-semibold text-emerald-600">🟢 ความดันโลหิตปกติ</td>
+              <td class="p-3">&lt; 120</td>
+              <td class="p-3">&lt; 80</td>
+              <td class="p-3 text-xs text-slate-600">สุขภาพดี รักษาพฤติกรรมทานอาหารครบ 5 หมู่ และออกกำลังกายสม่ำเสมอ</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="p-3 font-semibold text-yellow-600">🟡 ความดันค่อนข้างสูง</td>
+              <td class="p-3">120 - 129</td>
+              <td class="p-3">&lt; 80</td>
+              <td class="p-3 text-xs text-slate-600">เริ่มประเมินพฤติกรรมการลดอาหารเค็มหรือไขมันสูง ออกกำลังกายเป็นประจำ</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="p-3 font-semibold text-orange-500">🟠 ความดันสูง ระยะที่ 1</td>
+              <td class="p-3">130 - 139</td>
+              <td class="p-3">80 - 89</td>
+              <td class="p-3 text-xs text-slate-600">ควบคุมระดับอารมณ์และลดความเครียด ตรวจวัดความดันเช้า-เย็นเพื่อความแน่นอน</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="p-3 font-semibold text-orange-700">🔴 ความดันสูง ระยะที่ 2</td>
+              <td class="p-3">140 - 179</td>
+              <td class="p-3">90 - 109</td>
+              <td class="p-3 text-xs text-slate-600">ควรพบแพทย์ในโรงพยาบาลหรือสถานพยาบาลใกล้บ้านเพื่อเริ่มปรึกษาการควบคุมยา</td>
+            </tr>
+            <tr class="hover:bg-slate-50 bg-rose-50/50">
+              <td class="p-3 font-semibold text-rose-600 animate-pulse">🚨 ภาวะวิกฤต (ฉุกเฉิน)</td>
+              <td class="p-3">≥ 180</td>
+              <td class="p-3">≥ 110</td>
+              <td class="p-3 text-xs text-rose-900 font-medium">มีความเสี่ยงสูงที่จะเป็นอันตรายเฉียบพลัน ต้องรีบเดินทางไปโรงพยาบาลโดยด่วนที่สุด!</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-xs text-slate-400 mt-4 leading-relaxed">* หมายเหตุ: หากค่าตัวบน (SYS) และตัวล่าง (DIA) ตกอยู่ในเกณฑ์คนละระดับ ระบบประเมินจะยึดตามระดับความเสี่ยงที่สูงกว่าเป็นหลักในการแสดงผลเตือนเพื่อสุขอนามัยที่ดีและความปลอดภัยสูงสุดของผู้ป่วย</p>
+    </div>
+
+    <!-- References list -->
+    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-3">
+      <h2 class="text-md font-bold text-slate-900">📚 เอกสารอ้างอิงทางการแพทย์</h2>
+      <ul class="text-xs text-slate-600 list-decimal pl-4 space-y-2">
+        <li>สมาคมความดันโลหิตสูงแห่งประเทศไทย. (2562). <i>แนวทางเวชปฏิบัติการป้องกัน วินิจฉัย และรักษาโรคความดันโลหิตสูงในประเทศไทย 2562</i>. กรุงเทพมหานคร: สมาคมความดันโลหิตสูงแห่งประเทศไทย.</li>
+        <li>กระทรวงสาธารณสุข กรมควบคุมโรค. (2566). <i>คู่มือคัดกรองและป้องกันกลุ่มโรค NCDs (โรคไม่ติดต่อเรื้อรัง) ประจำปี 2566</i>. กรุงเทพฯ: โรงพิมพ์ชุมนุมสหกรณ์การเกษตรฯ.</li>
+        <li>World Health Organization (WHO). (2021). <i>Guideline for the pharmacological treatment of hypertension in adults</i>. Geneva: World Health Organization.</li>
+      </ul>
+    </div>
+  </main>
+
+  <footer class="bg-slate-900 text-slate-400 text-center py-6 border-t border-slate-800 text-xs mt-12">
+    © 2026 วิทยาลัยเทคนิคสมุทรสงคราม · การศึกษาเพื่อพัฒนาชุมชนและการแพทย์ทางไกล
+  </footer>
+
+</body>
+</html>

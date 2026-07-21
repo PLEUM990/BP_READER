@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ทะเบียนโปรไฟล์ผู้ใช้ - Smart BP Reader</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', 'Sarabun', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+  <!-- Header Section -->
+  <header class="bg-slate-900 text-white shadow-md border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="bg-teal-500 p-2 rounded-lg text-slate-900">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-xl font-bold tracking-tight">ระบบอ่านค่าความดันโลหิตด้วยปัญญาประดิษฐ์</h1>
+          <p class="text-xs text-slate-400">พัฒนาโดย วิทยาลัยเทคนิคสมุทรสงคราม (Smart BP Reader)</p>
+        </div>
+      </div>
+      
+      <!-- Navigation Links -->
+      <nav class="flex flex-wrap items-center gap-1 text-sm font-medium">
+        <a href="index.html" class="px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 hover:text-white transition">หน้าแรก</a>
+        <a href="history.html" class="px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 hover:text-white transition">ประวัติ/กราฟ</a>
+        <a href="guide.html" class="px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 hover:text-white transition">เกณฑ์/คำอธิบาย</a>
+        <a href="register.html" class="px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 hover:text-white transition">ลงทะเบียน</a>
+        <a href="profiles.html" class="px-3 py-2 rounded-md bg-slate-800 text-teal-400 border border-slate-700">โปรไฟล์ผู้ใช้</a>
+        <a href="management.html" class="ml-2 p-2 rounded-md hover:bg-slate-800 text-slate-400 hover:text-white transition" title="จัดการระบบ">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+          </svg>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-8">
+    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+      
+      <!-- List Title + Search Bar -->
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 border-b border-slate-100 pb-4">
+        <div>
+          <h2 class="text-lg font-bold text-slate-900">👥 รายชื่อทะเบียนโปรไฟล์ผู้ป่วย</h2>
+          <p class="text-xs text-slate-500 mt-1">คลิกที่การ์ดโปรไฟล์เพื่อเรียกดูข้อมูลประวัติสุขภาพ ค้นหากราฟ หรือแก้ไขข้อมูลบุคคล</p>
+        </div>
+        <div class="relative w-full md:w-80">
+          <input type="text" id="searchInp" oninput="filterProfiles()" placeholder="ค้นหาตามชื่อหรือรหัส ID..." class="w-full border border-slate-300 rounded-lg py-2 pl-9 pr-4 text-sm focus:outline-none focus:border-teal-500">
+          <span class="absolute left-3 top-2.5 text-slate-400">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+          </span>
+        </div>
+      </div>
+
+      <!-- Profiles Grid -->
+      <div id="profilesGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <!-- Dyn loading -->
+      </div>
+      
+      <!-- Empty State -->
+      <div id="emptyState" class="hidden text-center py-16 text-slate-400">
+        <svg class="w-12 h-12 mx-auto mb-2 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <p class="text-sm font-semibold">ไม่พบผู้ป่วยที่ตรงตามเงื่อนไขที่ค้นหา</p>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Detailed Modal -->
+  <div id="detailsModal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-slate-200 shadow-xl">
+      <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50 sticky top-0 z-10">
+        <h3 class="font-bold text-slate-900" id="modalTitle">ข้อมูลผู้ป่วย</h3>
+        <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
+      </div>
+      
+      <!-- Modal Contents -->
+      <div class="p-6 space-y-6">
+        
+        <!-- Top Summary Profile Card -->
+        <div class="flex items-center gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
+          <div class="w-20 h-20 rounded-full bg-teal-500 overflow-hidden flex items-center justify-center border-2 border-teal-300 shadow-inner flex-shrink-0">
+            <img id="avatarImg" class="w-full h-full object-cover hidden">
+            <svg id="avatarSvg" class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+            </svg>
+          </div>
+          <div>
+            <strong id="dispName" class="text-lg text-slate-900 block font-bold">--</strong>
+            <span id="dispId" class="text-xs font-semibold text-slate-500 block">ID: --</span>
+            <span id="dispCreatedAt" class="text-[10px] text-slate-400 block mt-1">ลงทะเบียนเมื่อ: --</span>
+          </div>
+        </div>
+
+        <!-- Tabular Info -->
+        <div id="viewPanel" class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+          <div>
+            <span class="text-xs text-slate-400 font-bold block mb-1">วันเกิด</span>
+            <span id="vDob" class="font-semibold text-slate-800">--</span>
+          </div>
+          <div>
+            <span class="text-xs text-slate-400 font-bold block mb-1">เพศกำเนิด</span>
+            <span id="vSex" class="font-semibold text-slate-800">--</span>
+          </div>
+          <div>
+            <span class="text-xs text-slate-400 font-bold block mb-1">น้ำหนัก / ส่วนสูง (BMI)</span>
+            <span id="vPhysique" class="font-semibold text-slate-800">--</span>
+          </div>
+          <div>
+            <span class="text-xs text-slate-400 font-bold block mb-1">เบอร์ติดต่อ</span>
+            <span id="vPhone" class="font-semibold text-slate-800">--</span>
+          </div>
+          <div>
+            <span class="text-xs text-slate-400 font-bold block mb-1">อีเมลติดต่อ</span>
+            <span id="vEmail" class="font-semibold text-slate-800">--</span>
+          </div>
+          <div>
+            <span class="text-xs text-slate-400 font-bold block mb-1">Telegram Chat ID</span>
+            <span id="vTelegram" class="font-semibold text-slate-800">--</span>
+          </div>
+          <div class="md:col-span-2">
+            <span class="text-xs text-slate-400 font-bold block mb-1">โรคประจำตัว</span>
+            <p id="vConditions" class="font-semibold text-slate-800 bg-slate-50 p-2 rounded border border-slate-200">--</p>
+          </div>
+          <div class="md:col-span-2">
+            <span class="text-xs text-slate-400 font-bold block mb-1">ยาประจำตัว</span>
+            <p id="vMedications" class="font-semibold text-slate-800 bg-slate-50 p-2 rounded border border-slate-200">--</p>
+          </div>
+        </div>
+
+        <!-- Edit Form (Hidden by default) -->
+        <form id="editForm" class="hidden space-y-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div class="col-span-2">
+              <label class="block text-xs font-semibold text-slate-600 mb-1">ชื่อ-นามสกุล *</label>
+              <input type="text" id="eFullName" required class="w-full border border-slate-300 rounded-lg py-1.5 px-3 text-sm focus:outline-none focus:border-teal-500">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">วันเกิด</label>
+              <input type="date" id="eDob" class="w-full border border-slate-300 rounded-lg py-1.5 px-3 text-sm focus:outline-none focus:border-teal-500">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">เพศกำเนิด</label>
+              <select id="eSex" class="w-full border border-slate-300 rounded-lg py-1.5 px-3 text-sm bg-white focus:outline-none focus:border-teal-500">
+                <option value="male">ชาย</option>
+                <option value="female">หญิง</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">น้ำหนัก (กก.)</label>
+              <input type="number" id="eWeight" step="0.1" class="w-full border border-slate-300 rounded-lg py-1.5 px-3 text-sm focus:outline-none focus:border-teal-500">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">ส่วนสูง (ซม.)</label>
+              <input type="number" id="eHeight" step="0.1" class="w-full border border-slate-300 rounded-lg py-1.5 px-3 text-sm focus:outline-none focus:border-teal-500">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">เบอร์ติดต่อ</label>
+              <input type="tel" id="ePhone" class="w-full border border-slate-300 rounded-lg py-1.5 px-3 text-sm focus:outline-none focus:border-teal-500">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">อีเมล</label>
+              <input type="email" id="eEmail" class="w-full border border-slate-300 rounded-lg py-1.5 px-3 text-sm focus:outline-none focus:border-teal-500">
+            </div>
+            <div class="col-span-2">
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Telegram Chat ID</label>
+              <input type="text" id="eTelegram" class="w-full border border-slate-300 rounded-lg py-1.5 px-3 text-sm focus:outline-none focus:border-teal-500">
+            </div>
+            <div class="col-span-2">
+              <label class="block text-xs font-semibold text-slate-600 mb-1">โรคประจำตัว</label>
+              <input type="text" id="eConditions" class="w-full border border-slate-300 rounded-lg py-1.5 px-3 text-sm focus:outline-none focus:border-teal-500">
+            </div>
+            <div class="col-span-2">
+              <label class="block text-xs font-semibold text-slate-600 mb-1">รายการยา</label>
+              <input type="text" id="eMedications" class="w-full border border-slate-300 rounded-lg py-1.5 px-3 text-sm focus:outline-none focus:border-teal-500">
+            </div>
+          </div>
+        </form>
+
+        <!-- Face Snaps Gallery -->
+        <div>
+          <span class="text-xs text-slate-400 font-bold block mb-2">📸 อัตลักษณ์ใบหน้าที่บันทึก</span>
+          <div id="facesGallery" class="grid grid-cols-3 gap-3">
+            <!-- Dyn -->
+          </div>
+        </div>
+
+        <!-- Action row -->
+        <div class="flex justify-between items-center pt-4 border-t border-slate-100 gap-3">
+          <button id="btnDelete" class="bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 py-2 px-4 rounded-lg text-xs font-bold transition">ลบรายชื่อ</button>
+          
+          <div class="flex gap-2">
+            <button id="btnEdit" class="bg-slate-100 hover:bg-slate-200 text-slate-800 py-2 px-4 rounded-lg text-xs font-bold transition">แก้ไขข้อมูล</button>
+            <button id="btnSaveEdit" class="hidden bg-teal-600 hover:bg-teal-700 text-white py-2 px-6 rounded-lg text-xs font-bold transition">บันทึกใหม่</button>
+            <button id="btnCancelEdit" class="hidden border border-slate-300 py-2 px-4 rounded-lg text-xs font-bold text-slate-600 transition">ยกเลิก</button>
+            <button id="btnHistoryLink" class="bg-teal-600 hover:bg-teal-700 text-white py-2 px-4 rounded-lg text-xs font-bold transition flex items-center gap-1">
+              ประวัติ/กราฟ
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="bg-slate-900 text-slate-400 text-center py-6 border-t border-slate-800 text-xs mt-12">
+    © 2026 วิทยาลัยเทคนิคสมุทรสงคราม · การศึกษาเพื่อพัฒนาชุมชนและการแพทย์ทางไกล
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/db.js"></script>
+  <script>
+    const grid = document.getElementById('profilesGrid');
+    const emptyState = document.getElementById('emptyState');
+    const searchInp = document.getElementById('searchInp');
+    
+    // Modal elements
+    const modal = document.getElementById('detailsModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const avatarImg = document.getElementById('avatarImg');
+    const avatarSvg = document.getElementById('avatarSvg');
+    const dispName = document.getElementById('dispName');
+    const dispId = document.getElementById('dispId');
+    const dispCreatedAt = document.getElementById('dispCreatedAt');
+    const facesGallery = document.getElementById('facesGallery');
+    
+    const viewPanel = document.getElementById('viewPanel');
+    const editForm = document.getElementById('editForm');
+    
+    const vDob = document.getElementById('vDob');
+    const vSex = document.getElementById('vSex');
+    const vPhysique = document.getElementById('vPhysique');
+    const vPhone = document.getElementById('vPhone');
+    const vEmail = document.getElementById('vEmail');
+    const vTelegram = document.getElementById('vTelegram');
+    const vConditions = document.getElementById('vConditions');
+    const vMedications = document.getElementById('vMedications');
+    
+    const eFullName = document.getElementById('eFullName');
+    const eDob = document.getElementById('eDob');
+    const eSex = document.getElementById('eSex');
+    const eWeight = document.getElementById('eWeight');
+    const eHeight = document.getElementById('eHeight');
+    const ePhone = document.getElementById('ePhone');
+    const eEmail = document.getElementById('eEmail');
+    const eTelegram = document.getElementById('eTelegram');
+    const eConditions = document.getElementById('eConditions');
+    const eMedications = document.getElementById('eMedications');
+    
+    const btnDelete = document.getElementById('btnDelete');
+    const btnEdit = document.getElementById('btnEdit');
+    const btnSaveEdit = document.getElementById('btnSaveEdit');
+    const btnCancelEdit = document.getElementById('btnCancelEdit');
+    const btnHistoryLink = document.getElementById('btnHistoryLink');
+
+    let activeUser = null;
+
+    // Load and render profiles list
+    function renderProfilesList(users) {
+      grid.innerHTML = '';
+      if (users.length === 0) {
+        emptyState.classList.remove('hidden');
+        return;
+      }
+      emptyState.classList.add('hidden');
+      
+      users.forEach(user => {
+        const card = document.createElement('div');
+        card.className = "bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition cursor-pointer flex flex-col justify-between";
+        card.onclick = () => openDetails(user.user_id);
+        
+        const hasFace = user.face_images && user.face_images.length > 0;
+        const profileImgHtml = hasFace ? 
+          `<img src="${user.face_images[0].dataUrl}" class="w-full h-full object-cover">` : 
+          `<svg class="w-12 h-12 text-slate-300" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>`;
+        
+        card.innerHTML = `
+          <div class="p-5 flex items-center gap-4">
+            <div class="w-14 h-14 rounded-full bg-slate-100 flex-shrink-0 flex items-center justify-center overflow-hidden border border-slate-200 shadow-inner">
+              ${profileImgHtml}
+            </div>
+            <div class="overflow-hidden">
+              <span class="text-[10px] font-bold text-slate-400 block uppercase">ID: ${user.user_id}</span>
+              <strong class="text-sm font-bold text-slate-900 block truncate" title="${user.full_name}">${user.full_name}</strong>
+              <span class="text-xs text-slate-500 block truncate mt-0.5">${user.conditions || 'ไม่มีโรคประจำตัว'}</span>
+            </div>
+          </div>
+          <div class="bg-slate-50 px-5 py-2.5 border-t border-slate-100 flex justify-between items-center">
+            <span class="text-[10px] text-slate-400">ลงทะเบียนเมื่อ: ${new Date(user.created_at).toLocaleDateString('th-TH')}</span>
+            <span class="text-[11px] text-teal-600 font-bold flex items-center gap-0.5">
+              เรียกดู 
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+            </span>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    // Filter profiles list
+    function filterProfiles() {
+      const q = searchInp.value.toLowerCase().trim();
+      const users = db.getUsers();
+      if (!q) {
+        renderProfilesList(users);
+        return;
+      }
+      const filtered = users.filter(u => 
+        u.full_name.toLowerCase().includes(q) || 
+        u.user_id.includes(q)
+      );
+      renderProfilesList(filtered);
+    }
+
+    // Open detail modal
+    function openDetails(userId) {
+      const user = db.getUserById(userId);
+      if (!user) return;
+      activeUser = user;
+      
+      // Basic modal details
+      modalTitle.textContent = `ประวัติผู้ป่วย - ${user.full_name}`;
+      dispName.textContent = user.full_name;
+      dispId.textContent = `ID: ${user.user_id}`;
+      dispCreatedAt.textContent = `ลงทะเบียนเมื่อ: ${new Date(user.created_at).toLocaleString('th-TH')}`;
+      
+      const hasFace = user.face_images && user.face_images.length > 0;
+      if (hasFace) {
+        avatarImg.src = user.face_images[0].dataUrl;
+        avatarImg.classList.remove('hidden');
+        avatarSvg.classList.add('hidden');
+      } else {
+        avatarImg.src = '';
+        avatarImg.classList.add('hidden');
+        avatarSvg.classList.remove('hidden');
+      }
+      
+      // Load view fields
+      vDob.textContent = user.date_of_birth || '-';
+      vSex.textContent = user.sex === 'male' ? 'ชาย (Male)' : user.sex === 'female' ? 'หญิง (Female)' : '-';
+      
+      const bmiStr = user.bmi ? ` (BMI: ${user.bmi})` : '';
+      vPhysique.textContent = `${user.weight_kg || '-'} กก. / ${user.height_cm || '-'} ซม.${bmiStr}`;
+      
+      vPhone.textContent = user.contact_phone || '-';
+      vEmail.textContent = user.notify_email || '-';
+      vTelegram.textContent = user.notify_telegram || '-';
+      vConditions.textContent = user.conditions || 'ไม่มีโรคประจำตัว';
+      vMedications.textContent = user.medications || 'ไม่มีรายการยาบันทึก';
+      
+      // Face images gallery
+      facesGallery.innerHTML = '';
+      if (hasFace) {
+        user.face_images.forEach((face, idx) => {
+          const img = document.createElement('img');
+          img.src = face.dataUrl;
+          img.className = "w-full aspect-square object-cover rounded-lg border border-slate-200 shadow-sm cursor-pointer hover:scale-105 transition duration-150";
+          img.onclick = () => {
+            // Fullscreen view
+            const overlay = document.createElement('div');
+            overlay.className = "fixed inset-0 bg-slate-900/90 z-[1000] flex items-center justify-center p-4 cursor-pointer";
+            overlay.onclick = () => overlay.remove();
+            const fullImg = document.createElement('img');
+            fullImg.src = face.dataUrl;
+            fullImg.className = "max-w-full max-h-full object-contain rounded-lg";
+            overlay.appendChild(fullImg);
+            document.body.appendChild(overlay);
+          };
+          facesGallery.appendChild(img);
+        });
+      } else {
+        facesGallery.innerHTML = `<span class="col-span-3 text-xs text-slate-400 py-3 block text-center">ไม่มีข้อมูลภาพสแกนนิ้ว/ใบหน้าเข้าระบบ</span>`;
+      }
+      
+      // Reset edit panels
+      cancelEdit();
+      modal.classList.remove('hidden');
+    }
+
+    // Toggle edit mode
+    btnEdit.addEventListener('click', () => {
+      // Show form & Populate edit values
+      eFullName.value = activeUser.full_name;
+      eDob.value = activeUser.date_of_birth || '';
+      eSex.value = activeUser.sex || '';
+      eWeight.value = activeUser.weight_kg || '';
+      eHeight.value = activeUser.height_cm || '';
+      ePhone.value = activeUser.contact_phone || '';
+      eEmail.value = activeUser.notify_email || '';
+      eTelegram.value = activeUser.notify_telegram || '';
+      eConditions.value = activeUser.conditions || '';
+      eMedications.value = activeUser.medications || '';
+      
+      viewPanel.classList.add('hidden');
+      editForm.classList.remove('hidden');
+      
+      btnEdit.classList.add('hidden');
+      btnSaveEdit.classList.remove('hidden');
+      btnCancelEdit.classList.remove('hidden');
+    });
+
+    btnCancelEdit.addEventListener('click', cancelEdit);
+
+    function cancelEdit() {
+      viewPanel.classList.remove('hidden');
+      editForm.classList.add('hidden');
+      
+      btnEdit.classList.remove('hidden');
+      btnSaveEdit.classList.add('hidden');
+      btnCancelEdit.classList.add('hidden');
+    }
+
+    // Save changes
+    btnSaveEdit.addEventListener('click', () => {
+      const fn = eFullName.value.trim();
+      if (!fn) {
+        alert("กรุณากรอกชื่อผู้ป่วย");
+        return;
+      }
+      
+      const w = parseFloat(eWeight.value);
+      const h = parseFloat(eHeight.value);
+      let bmi = null;
+      if (w > 0 && h > 0) {
+        bmi = parseFloat((w / ((h / 100) ** 2)).toFixed(1));
+      }
+      
+      const payload = {
+        full_name: fn,
+        date_of_birth: eDob.value,
+        sex: eSex.value,
+        weight_kg: w || null,
+        height_cm: h || null,
+        bmi: bmi,
+        contact_phone: ePhone.value.trim(),
+        notify_email: eEmail.value.trim(),
+        notify_telegram: eTelegram.value.trim(),
+        conditions: eConditions.value.trim(),
+        medications: eMedications.value.trim()
+      };
+      
+      try {
+        db.updateUser(activeUser.user_id, payload);
+        alert("บันทึกการแก้ไขโปรไฟล์เสร็จสิ้น!");
+        
+        // Refresh
+        activeUser = db.getUserById(activeUser.user_id);
+        openDetails(activeUser.user_id);
+        filterProfiles();
+      } catch (err) {
+        alert("เกิดข้อผิดพลาด: " + err.message);
+      }
+    });
+
+    // Delete user profile
+    btnDelete.addEventListener('click', () => {
+      const ok = confirm(`🚨 แจ้งเตือน: คุณต้องการที่จะลบโปรไฟล์ของ "${activeUser.full_name}" หรือไม่?\n\nการกระทำนี้จะลบประวัติความดันโลหิตทั้งหมดของผู้ป่วยรายนี้และข้อมูลใบหน้าที่เก็บไว้ทั้งหมดในเบราว์เซอร์อย่างถาวร!`);
+      if (ok) {
+        db.deleteUser(activeUser.user_id);
+        closeModal();
+        filterProfiles();
+      }
+    });
+
+    // Link to history with filter
+    btnHistoryLink.addEventListener('click', () => {
+      if (activeUser) {
+        window.location.href = `history.html?name=${encodeURIComponent(activeUser.full_name)}`;
+      }
+    });
+
+    function closeModal() {
+      modal.classList.add('hidden');
+      activeUser = null;
+    }
+
+    // Modal click out closing helper
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    // Init
+    window.addEventListener('load', () => {
+      renderProfilesList(db.getUsers());
+    });
+  </script>
+
+</body>
+</html>
