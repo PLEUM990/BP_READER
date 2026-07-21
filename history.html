@@ -3,11 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ประวัติและกราฟแนวโน้ม - Smart BP Reader</title>
+  <title>ประวัติสุขภาพและกราฟแนวโน้ม - Smart BP Reader</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="static/style.css">
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <!-- Flatpickr -->
@@ -17,62 +19,68 @@
   <!-- jsPDF & html2canvas for PDF export -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
-  <style>
-    body {
-      font-family: 'Inter', 'Sarabun', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
-  </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased font-sans">
 
   <!-- Header Section -->
-  <header class="bg-slate-900 text-white shadow-md border-b border-slate-800">
-    <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
-      <div class="flex items-center gap-3">
-        <div class="bg-teal-500 p-2 rounded-lg text-slate-900">
-          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M7 12l3-3 3 3 4-4M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
-          </svg>
-        </div>
+  <header class="header-gov text-white shadow-sm sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 py-3 flex flex-col lg:flex-row items-center justify-between gap-3">
+      <a href="index.html" class="flex items-center gap-3 group">
+        <img src="static/logosstc.png" alt="โลโก้ SSTC" class="h-10 w-auto opacity-95">
         <div>
-          <h1 class="text-xl font-bold tracking-tight">ระบบอ่านค่าความดันโลหิตด้วยปัญญาประดิษฐ์</h1>
-          <p class="text-xs text-slate-400">พัฒนาโดย วิทยาลัยเทคนิคสมุทรสงคราม (Smart BP Reader)</p>
+          <h1 class="text-base font-bold text-white tracking-tight">SMART BP READER</h1>
+          <p class="text-[11px] text-slate-400 font-medium">ระบบอ่านค่าความดันโลหิตด้วยเทคโนโลยีปัญญาประดิษฐ์ · วิทยาลัยเทคนิคสมุทรสงคราม</p>
         </div>
-      </div>
+      </a>
       
       <!-- Navigation Links -->
-      <nav class="flex flex-wrap items-center gap-1 text-sm font-medium">
-        <a href="index.html" class="px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 hover:text-white transition">หน้าแรก</a>
-        <a href="history.html" class="px-3 py-2 rounded-md bg-slate-800 text-teal-400 border border-slate-700">ประวัติ/กราฟ</a>
-        <a href="guide.html" class="px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 hover:text-white transition">เกณฑ์/คำอธิบาย</a>
-        <a href="register.html" class="px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 hover:text-white transition">ลงทะเบียน</a>
-        <a href="profiles.html" class="px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 hover:text-white transition">โปรไฟล์ผู้ใช้</a>
-        <a href="management.html" class="ml-2 p-2 rounded-md hover:bg-slate-800 text-slate-400 hover:text-white transition" title="จัดการระบบ">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <nav class="flex items-center gap-1 text-xs font-medium text-slate-300 flex-wrap justify-center">
+        <a href="index.html" class="px-3.5 py-1.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
+          <span>หน้าแรก</span>
+        </a>
+        <a href="history.html" class="px-3.5 py-1.5 rounded-lg bg-blue-700 text-white font-medium transition">
+          <span>ประวัติสุขภาพ/กราฟ</span>
+        </a>
+        <a href="guide.html" class="px-3.5 py-1.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
+          <span>เกณฑ์การประเมิน</span>
+        </a>
+        <a href="register.html" class="px-3.5 py-1.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
+          <span>ลงทะเบียนผู้ป่วย</span>
+        </a>
+        <a href="profiles.html" class="px-3.5 py-1.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
+          <span>แฟ้มทะเบียนประวัติ</span>
+        </a>
+        <a href="management.html" class="nav-icon-only p-1.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition" title="ตั้งค่าระบบ">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
           </svg>
         </a>
+        <div id="navAuthContainer" class="flex items-center gap-2 ml-auto pl-3 border-l border-slate-700"></div>
       </nav>
     </div>
   </header>
 
   <!-- Main Content -->
-  <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-8 space-y-8">
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 md:px-6 py-6 space-y-5">
     
     <!-- Filter Card -->
-    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
-      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
+      <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
         <div>
-          <h2 class="text-base font-bold text-slate-900">🔍 ค้นหาประวัติและกำหนดกรองข้อมูล</h2>
-          <p class="text-xs text-slate-500 mt-0.5">พิมพ์ชื่อ รหัสผู้ใช้ หรือเลือกกรอบวันที่เพื่อตรวจสอบแนวโน้มสุขภาพ</p>
+          <h2 class="text-xs font-semibold text-slate-900 tracking-tight flex items-center gap-2 uppercase">
+            <svg class="w-4 h-4 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            <span>สืบค้นและคัดกรองรายงานประวัติผู้ป่วย</span>
+          </h2>
+          <p class="text-[11px] text-slate-500 mt-0.5">ระบุชื่อ รหัสผู้ป่วย หรือเลือกช่วงเวลาที่ต้องการตรวจสอบ</p>
         </div>
         
-        <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+        <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto text-xs">
           <!-- Search field -->
-          <div class="relative flex-grow md:flex-grow-0 md:w-64">
-            <input type="text" id="qName" list="userList" placeholder="พิมพ์ชื่อผู้ป่วย หรือรหัส ID..." class="w-full border border-slate-300 rounded-lg py-1.5 pl-8 pr-3 text-xs focus:outline-none focus:border-teal-500">
+          <div class="relative flex-grow lg:flex-grow-0 lg:w-56">
+            <input type="text" id="qName" list="userList" placeholder="ค้นหาชื่อ หรือรหัสผู้ป่วย..." class="w-full border border-slate-300 rounded-lg py-1.5 pl-8 pr-3 text-xs focus:outline-none focus:border-blue-600 font-semibold bg-white">
             <span class="absolute left-2.5 top-2 text-slate-400">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -82,201 +90,177 @@
           </div>
           
           <!-- Date Pickers -->
-          <div class="flex items-center gap-1.5">
-            <input type="text" id="dateFrom" placeholder="จากวันที่" class="border border-slate-300 rounded-lg py-1.5 px-2 text-xs w-24 text-center bg-white focus:outline-none focus:border-teal-500">
-            <span class="text-xs text-slate-400">ถึง</span>
-            <input type="text" id="dateTo" placeholder="ถึงวันที่" class="border border-slate-300 rounded-lg py-1.5 px-2 text-xs w-24 text-center bg-white focus:outline-none focus:border-teal-500">
+          <div class="flex items-center gap-1">
+            <input type="text" id="dateFrom" placeholder="วันที่เริ่ม" class="border border-slate-300 rounded-lg py-1.5 px-2.5 text-xs w-24 text-center bg-white focus:outline-none focus:border-blue-600 font-medium">
+            <span class="text-slate-400 text-[10px]">ถึง</span>
+            <input type="text" id="dateTo" placeholder="สิ้นสุด" class="border border-slate-300 rounded-lg py-1.5 px-2.5 text-xs w-24 text-center bg-white focus:outline-none focus:border-blue-600 font-medium">
           </div>
           
           <div class="flex gap-1.5">
-            <button id="btnSearch" class="bg-slate-900 hover:bg-slate-800 text-white font-semibold py-1.5 px-4 rounded-lg text-xs transition">ค้นหา</button>
-            <button id="btnAll" class="border border-slate-300 hover:bg-slate-100 text-slate-700 py-1.5 px-3 rounded-lg text-xs transition">ดูทั้งหมด</button>
+            <button id="btnSearch" class="bg-slate-900 hover:bg-slate-800 text-white font-medium py-1.5 px-3.5 rounded-lg text-xs transition">
+              <span>ค้นหา</span>
+            </button>
+            <button id="btnAll" class="border border-slate-300 hover:bg-slate-100 text-slate-700 font-medium py-1.5 px-3 rounded-lg text-xs transition">
+              ล้างค่า
+            </button>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Active User Header Banner -->
-    <div id="userHeaderBanner" class="hidden bg-slate-900 text-white p-6 rounded-xl border border-slate-800 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
-      <div>
-        <span class="text-[10px] font-bold text-teal-400 uppercase tracking-widest">ข้อมูลทะเบียนผู้ป่วยผู้ตรวจ</span>
-        <h2 id="bannerName" class="text-lg font-bold">--</h2>
-        <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-400 mt-1">
-          <span id="bannerId">ID: --</span>
-          <span id="bannerDob">วันเกิด: --</span>
-          <span id="bannerSex">เพศ: --</span>
-          <span id="bannerPhysique">สัดส่วน: --</span>
-          <span id="bannerBmi">BMI: --</span>
-        </div>
-      </div>
-      <div class="flex flex-col gap-1 text-xs bg-slate-800/80 p-3 rounded-lg border border-slate-700 max-w-sm">
-        <span class="font-bold text-teal-400">📋 โรคและยาประจำตัว:</span>
-        <span id="bannerConditions" class="text-[11px] leading-relaxed text-slate-300">--</span>
-        <span id="bannerMeds" class="text-[11px] leading-relaxed text-slate-300">--</span>
-      </div>
-    </div>
-
-    <!-- Charts Card -->
-    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
-      <div class="flex justify-between items-center border-b border-slate-100 pb-3">
-        <h3 class="font-bold text-slate-900 text-sm flex items-center gap-2">
-          <svg class="w-4 h-4 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2z"></path>
+    <div id="userHeaderBanner" class="hidden bg-slate-900 text-white p-5 rounded-xl border border-slate-800 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 rounded-full bg-slate-800 border border-slate-700 overflow-hidden flex items-center justify-center shrink-0">
+          <img id="bannerAvatar" class="w-full h-full object-cover hidden">
+          <svg id="bannerSvg" class="w-6 h-6 text-slate-400" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
           </svg>
-          กราฟเส้นแสดงแนวโน้ม (SYS · DIA · PULSE)
-        </h3>
-        
-        <!-- Toggle values label switch -->
-        <div class="flex items-center gap-2">
-          <span class="text-xs font-semibold text-slate-600">แสดงป้ายค่าบนจุด:</span>
-          <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" id="switchLabels" checked class="sr-only peer">
-            <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-teal-600"></div>
-          </label>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h3 id="bannerName" class="text-base font-bold text-white">--</h3>
+            <span id="bannerId" class="text-[10px] bg-slate-800 text-blue-300 font-semibold px-2 py-0.5 rounded border border-slate-700">ID: --</span>
+          </div>
+          <p id="bannerSpecs" class="text-xs text-slate-300 mt-0.5">--</p>
+          <p id="bannerConditions" class="text-[11px] text-slate-400 mt-0.5">--</p>
         </div>
       </div>
 
-      <div class="relative h-80 md:h-[400px] w-full">
-        <canvas id="chartAll"></canvas>
-      </div>
-      <p class="text-[10px] text-slate-400 text-center">* หมายเหตุ: สามารถแตะหรือคลิกที่ป้ายชื่อตัวแปรความดัน (SYS, DIA, PULSE) ด้านบนกราฟเพื่อซ่อนหรือเปิดแสดงเส้นเฉพาะจุดข้อมูลได้</p>
-    </div>
-
-    <!-- Latest summary card (Hidden in "All View") -->
-    <div id="summaryCard" class="hidden bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-      <h3 class="font-bold text-slate-900 text-sm mb-3">📋 บทสรุปการวัดค่าล่าสุด</h3>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
-          <span class="text-slate-400 block font-semibold mb-1">วันที่ล่าสุดที่วัด</span>
-          <strong id="sumDate" class="text-sm text-slate-800">--</strong>
-        </div>
-        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
-          <span class="text-slate-400 block font-semibold mb-1">ค่าความดันโลหิต</span>
-          <strong id="sumBP" class="text-sm text-slate-800">--</strong>
-        </div>
-        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
-          <span class="text-slate-400 block font-semibold mb-1">แปลผลและข้อมูลการวัด</span>
-          <strong id="sumInterp" class="text-sm text-slate-800 block">--</strong>
-          <span id="sumMeta" class="text-[10px] text-slate-500 mt-1 block">--</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- History Table Card -->
-    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
-      <div class="flex justify-between items-center border-b border-slate-100 pb-3">
-        <h3 class="font-bold text-slate-900 text-sm">📋 ตารางบันทึกรายงานประวัติความดันโลหิต</h3>
-        <button id="btnExportPdf" class="bg-teal-600 hover:bg-teal-700 text-white font-semibold py-1.5 px-3 rounded-lg text-xs transition flex items-center gap-1.5 shadow-sm">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="flex items-center gap-3">
+        <button id="btnExportPdf" class="bg-blue-700 hover:bg-blue-800 text-white font-medium py-2 px-3.5 rounded-lg text-xs shadow-sm flex items-center gap-1.5 transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
           </svg>
-          ดาวน์โหลดรายงาน PDF
+          <span>ส่งออกรายงาน PDF</span>
         </button>
       </div>
+    </div>
 
-      <div class="overflow-x-auto">
-        <table class="w-full text-left border-collapse text-xs md:text-sm">
+    <!-- Chart Card -->
+    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h2 class="text-xs font-semibold text-slate-900 tracking-tight flex items-center gap-2 uppercase">
+          <svg class="w-4 h-4 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path>
+          </svg>
+          <span>กราฟวิเคราะห์แนวโน้มระดับความดันโลหิต</span>
+        </h2>
+        <label class="flex items-center gap-1.5 text-xs text-slate-600 font-medium cursor-pointer">
+          <input type="checkbox" id="switchLabels" checked class="rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+          <span>แสดงค่าตัวเลข</span>
+        </label>
+      </div>
+
+      <div class="h-72 w-full relative">
+        <canvas id="chartAll"></canvas>
+      </div>
+    </div>
+
+    <!-- Table Records Card -->
+    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h2 class="text-xs font-semibold text-slate-900 tracking-tight flex items-center gap-2 uppercase">
+          <svg class="w-4 h-4 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+          </svg>
+          <span>ตารางบันทึกประวัติความดันโลหิตย้อนหลัง</span>
+        </h2>
+        <span id="recordCountBadge" class="text-[10px] font-semibold bg-slate-100 text-slate-600 px-2.5 py-0.5 rounded border border-slate-200">-- รายการ</span>
+      </div>
+
+      <div class="overflow-x-auto rounded-lg border border-slate-200">
+        <table class="w-full text-left border-collapse text-xs">
           <thead>
-            <tr class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
-              <th class="p-3">เวลาที่วัด</th>
-              <th class="p-3">ชื่อผู้ป่วย</th>
-              <th class="p-3">SYS</th>
-              <th class="p-3">DIA</th>
-              <th class="p-3">PULSE</th>
-              <th class="p-3" id="thPosture">ท่าทาง</th>
-              <th class="p-3" id="thArm">แขน</th>
-              <th class="p-3" id="thBehavior">พฤติกรรมก่อนวัด</th>
-              <th class="p-3" id="thSymptoms">อาการร่วม</th>
+            <tr class="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200">
+              <th class="p-3">วัน/เวลา ตรวจวัด</th>
+              <th id="thName" class="p-3">ชื่อ-นามสกุลผู้ป่วย</th>
+              <th class="p-3">SYS (mmHg)</th>
+              <th class="p-3">DIA (mmHg)</th>
+              <th class="p-3">PULSE (bpm)</th>
+              <th class="p-3">ท่าทาง/แขน</th>
+              <th class="p-3">อาการร่วม/หมายเหตุ</th>
               <th class="p-3 text-center">จัดการ</th>
             </tr>
           </thead>
-          <tbody id="tblBody" class="divide-y divide-slate-100 text-slate-700">
-            <!-- Dyn -->
+          <tbody id="tblBody" class="divide-y divide-slate-100 text-slate-700 font-medium">
+            <!-- Dynamic rows load here -->
           </tbody>
         </table>
       </div>
-      
-      <!-- Empty State Table -->
-      <div id="tableEmptyState" class="hidden text-center py-12 text-slate-400 text-xs">
-        ไม่มีรายการข้อมูลบันทึกความดันในช่วงและกรอบเงื่อนไขนี้
-      </div>
     </div>
-
   </main>
 
-  <!-- PDF Document Off-Screen Container (Generates beautiful layout for html2canvas) -->
-  <div id="pdfReportContainer" class="fixed top-[-9999px] left-[-9999px] bg-white p-12 text-slate-900 space-y-8 w-[800px]" style="font-family: 'Sarabun', sans-serif;">
-    <div class="text-center border-b-2 border-slate-900 pb-4">
-      <h1 class="text-2xl font-bold">รายงานบันทึกประวัติสุขภาพความดันโลหิตและชีพจร</h1>
-      <p class="text-sm mt-1">วิทยาลัยเทคนิคสมุทรสงคราม · Smart BP Reader Report</p>
-      <p class="text-xs text-slate-500 mt-0.5">ออกรายงานเมื่อวันที่: <span id="pdfReportDate">--</span></p>
-    </div>
-
-    <!-- User Specs -->
-    <div class="grid grid-cols-2 gap-4 text-sm bg-slate-50 p-4 rounded-xl border border-slate-200">
-      <div>
-        <span class="text-xs text-slate-400 font-bold block">ชื่อผู้ป่วย</span>
-        <strong id="pdfUserName" class="text-slate-800">--</strong>
+  <!-- Hidden PDF Export Container -->
+  <div id="pdfReportContainer" class="fixed top-[-9999px] left-[-9999px] w-[800px] bg-white p-8 space-y-6 text-slate-900 font-sans">
+    <div class="flex items-center justify-between border-b-2 border-slate-900 pb-4">
+      <div class="flex items-center gap-3">
+        <img src="static/logosstc.png" class="h-12 w-auto">
+        <div>
+          <h1 class="text-lg font-bold text-slate-900">รายงานสรุปผลการประเมินประวัติสุขภาพความดันโลหิต</h1>
+          <p class="text-xs text-slate-600">SMART BP READER · วิทยาลัยเทคนิคสมุทรสงคราม</p>
+        </div>
       </div>
-      <div>
-        <span class="text-xs text-slate-400 font-bold block">รหัส ID ผู้ป่วย</span>
-        <strong id="pdfUserId" class="text-slate-800">--</strong>
-      </div>
-      <div>
-        <span class="text-xs text-slate-400 font-bold block">วันเกิด / เพศ</span>
-        <span id="pdfUserSex" class="text-slate-800">--</span>
-      </div>
-      <div>
-        <span class="text-xs text-slate-400 font-bold block">น้ำหนัก / ส่วนสูง (BMI)</span>
-        <span id="pdfUserPhysique" class="text-slate-800">--</span>
-      </div>
-      <div class="col-span-2 border-t border-slate-200 pt-2">
-        <span class="text-xs text-slate-400 font-bold block">โรคประจำตัวและยารักษา</span>
-        <p id="pdfUserConditions" class="text-xs text-slate-800 mt-1 leading-relaxed">--</p>
+      <div class="text-right text-xs">
+        <span class="block text-slate-500 font-semibold">วันที่พิมพ์เอกสาร:</span>
+        <span id="pdfReportDate" class="font-bold">--</span>
       </div>
     </div>
 
-    <!-- Chart clone visual -->
-    <div class="border border-slate-200 rounded-xl p-4 bg-white">
-      <h2 class="text-sm font-bold mb-3">📈 กราฟเส้นแสดงแนวโน้มการเปลี่ยนแปลง</h2>
-      <div class="h-80 w-full flex items-center justify-center">
-        <img id="pdfChartImg" class="max-w-full max-h-full object-contain">
+    <!-- Patient Details -->
+    <div class="bg-slate-50 p-4 rounded-lg border border-slate-300 text-xs grid grid-cols-2 gap-3">
+      <div>
+        <p><strong>ชื่อ-นามสกุลผู้ป่วย:</strong> <span id="pdfUserName">--</span></p>
+        <p><strong>รหัสประจำตัว (ID):</strong> <span id="pdfUserId">--</span></p>
+        <p><strong>เพศ/วันเกิด:</strong> <span id="pdfUserSex">--</span></p>
+      </div>
+      <div>
+        <p><strong>สรีรวิทยา (น้ำหนัก/ส่วนสูง):</strong> <span id="pdfUserPhysique">--</span></p>
+        <p id="pdfUserConditions" class="mt-1 text-[11px] leading-relaxed">--</p>
       </div>
     </div>
 
-    <!-- Table clone -->
-    <div class="space-y-2">
-      <h2 class="text-sm font-bold">📋 รายการตรวจวัดประวัติย้อนหลัง</h2>
-      <table class="w-full text-left border-collapse text-[11px] border border-slate-300">
+    <!-- Chart image -->
+    <div class="border border-slate-300 p-2.5 rounded-lg">
+      <h3 class="text-xs font-bold text-slate-800 mb-2">แนวโน้มระดับความดันโลหิต:</h3>
+      <img id="pdfChartImg" class="w-full h-auto">
+    </div>
+
+    <!-- Table -->
+    <div>
+      <h3 class="text-xs font-bold text-slate-800 mb-2">รายการบันทึกผลการตรวจวัด:</h3>
+      <table class="w-full text-left border-collapse text-[10px]">
         <thead>
-          <tr class="bg-slate-100 text-slate-700 font-bold border-b border-slate-300">
-            <th class="p-2 border border-slate-300">เวลาวัด</th>
+          <tr class="bg-slate-100 font-bold border border-slate-300">
+            <th class="p-2 border border-slate-300">วัน/เวลา</th>
             <th class="p-2 border border-slate-300">SYS</th>
             <th class="p-2 border border-slate-300">DIA</th>
             <th class="p-2 border border-slate-300">PULSE</th>
             <th class="p-2 border border-slate-300">ท่าทาง</th>
             <th class="p-2 border border-slate-300">แขน</th>
-            <th class="p-2 border border-slate-300 font-medium">อาการร่วม/พฤติกรรม</th>
+            <th class="p-2 border border-slate-300">หมายเหตุ</th>
           </tr>
         </thead>
-        <tbody id="pdfTblBody" class="divide-y divide-slate-200 text-slate-800">
-          <!-- Clone -->
-        </tbody>
+        <tbody id="pdfTblBody"></tbody>
       </table>
-    </div>
-
-    <div class="flex justify-between items-center text-[10px] text-slate-400 border-t border-slate-200 pt-4">
-      <span>* รายงานเล่มนี้ใช้สำหรับติดตามสภาวะสุขภาพเบื้องต้น ไม่ทดแทนการวินิจฉัยโรคจากแพทย์</span>
-      <span>ลงชื่อผู้ตรวจสอบประวัติ: .............................................................</span>
     </div>
   </div>
 
-  <footer class="bg-slate-900 text-slate-400 text-center py-6 border-t border-slate-800 text-xs mt-12">
-    © 2026 วิทยาลัยเทคนิคสมุทรสงคราม · การศึกษาเพื่อพัฒนาชุมชนและการแพทย์ทางไกล
+  <footer class="bg-slate-900 text-slate-400 text-center py-5 border-t border-slate-800 text-xs mt-auto">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-2">
+      <div class="flex items-center gap-2">
+        <img src="static/logosstc.png" alt="SSTC" class="h-5 w-auto opacity-75">
+        <span class="font-medium text-slate-300">SMART BP READER</span>
+        <span>· วิทยาลัยเทคนิคสมุทรสงคราม</span>
+      </div>
+      <p class="text-[11px] text-slate-400">การศึกษาและพัฒนาระบบคัดกรองสุขภาพทางไกล (Telemedicine Portal)</p>
+    </div>
   </footer>
 
   <!-- Scripts -->
   <script src="js/db.js"></script>
+  <script src="js/auth.js"></script>
+  
   <script>
     const qName = document.getElementById('qName');
     const userList = document.getElementById('userList');
@@ -286,27 +270,20 @@
     const btnAll = document.getElementById('btnAll');
     
     const userHeaderBanner = document.getElementById('userHeaderBanner');
+    const bannerAvatar = document.getElementById('bannerAvatar');
+    const bannerSvg = document.getElementById('bannerSvg');
     const bannerName = document.getElementById('bannerName');
     const bannerId = document.getElementById('bannerId');
-    const bannerDob = document.getElementById('bannerDob');
-    const bannerSex = document.getElementById('bannerSex');
-    const bannerPhysique = document.getElementById('bannerPhysique');
-    const bannerBmi = document.getElementById('bannerBmi');
+    const bannerSpecs = document.getElementById('bannerSpecs');
     const bannerConditions = document.getElementById('bannerConditions');
-    const bannerMeds = document.getElementById('bannerMeds');
+    const btnExportPdf = document.getElementById('btnExportPdf');
     
     const switchLabels = document.getElementById('switchLabels');
     const tblBody = document.getElementById('tblBody');
-    const tableEmptyState = document.getElementById('tableEmptyState');
-    const btnExportPdf = document.getElementById('btnExportPdf');
-    
-    const summaryCard = document.getElementById('summaryCard');
-    const sumDate = document.getElementById('sumDate');
-    const sumBP = document.getElementById('sumBP');
-    const sumInterp = document.getElementById('sumInterp');
-    const sumMeta = document.getElementById('sumMeta');
+    const thName = document.getElementById('thName');
+    const recordCountBadge = document.getElementById('recordCountBadge');
 
-    // PDF elements
+    // PDF Elements
     const pdfReportContainer = document.getElementById('pdfReportContainer');
     const pdfReportDate = document.getElementById('pdfReportDate');
     const pdfUserName = document.getElementById('pdfUserName');
@@ -317,206 +294,156 @@
     const pdfChartImg = document.getElementById('pdfChartImg');
     const pdfTblBody = document.getElementById('pdfTblBody');
 
+    let chartInstance = null;
     let currentRows = [];
     let isAllView = true;
-    let chartInstance = null;
     let flatpickrFrom = null;
     let flatpickrTo = null;
 
-    // Load users in datalist
+    function initDatePickers() {
+      if (typeof flatpickr !== 'undefined') {
+        flatpickrFrom = flatpickr("#dateFrom", {
+          locale: "th",
+          dateFormat: "Y-m-d",
+          onChange: function() { loadAndFilter(); }
+        });
+        flatpickrTo = flatpickr("#dateTo", {
+          locale: "th",
+          dateFormat: "Y-m-d",
+          onChange: function() { loadAndFilter(); }
+        });
+      }
+    }
+
     function loadUsersDatalist() {
       const users = db.getUsers();
       userList.innerHTML = '';
       users.forEach(u => {
         const opt = document.createElement('option');
         opt.value = u.full_name;
-        opt.label = `ID: ${u.user_id}`;
         userList.appendChild(opt);
+        const optId = document.createElement('option');
+        optId.value = u.user_id;
+        userList.appendChild(optId);
       });
     }
 
-    // Init Date Pickers
-    function initDatePickers() {
-      flatpickrFrom = flatpickr(dateFrom, {
-        altInput: true,
-        altFormat: 'd/m/Y',
-        dateFormat: 'Y-m-d',
-        locale: flatpickr.l10ns.th,
-        allowInput: true
-      });
-      flatpickrTo = flatpickr(dateTo, {
-        altInput: true,
-        altFormat: 'd/m/Y',
-        dateFormat: 'Y-m-d',
-        locale: flatpickr.l10ns.th,
-        allowInput: true
-      });
+    function postureText(p) {
+      if (p === 'sitting') return 'นั่ง';
+      if (p === 'lying') return 'นอน';
+      if (p === 'standing') return 'ยืน';
+      return '-';
     }
 
-    // Translate helpers
-    const postureText = p => ({ sitting: 'นั่ง', lying: 'นอน', standing: 'ยืน' })[p] || '-';
-    const armText = a => ({ left: 'ซ้าย', right: 'ขวา' })[a] || '-';
-
-    function getBPInterpretationText(sys, dia) {
-      if (sys >= 180 || dia >= 110) return '🔴 ภาวะวิกฤต (ฉุกเฉิน)';
-      if (sys >= 140 || dia >= 90) return '🟠 ความดันโลหิตสูง ระยะที่ 2';
-      if ((sys >= 130 && sys <= 139) || (dia >= 80 && dia <= 89)) return '🟠 ความดันโลหิตสูง ระยะที่ 1';
-      if (sys >= 120 && sys <= 129 && dia < 80) return '🟡 ความดันโลหิตค่อนข้างสูง';
-      if (sys < 90 && dia < 60) return '🔵 ความดันโลหิตต่ำ';
-      return '🟢 ความดันโลหิตปกติ';
+    function armText(a) {
+      if (a === 'left') return 'แขนซ้าย';
+      if (a === 'right') return 'แขนขวา';
+      return '-';
     }
 
     function getBPColor(sys, dia) {
-      if (sys >= 180 || dia >= 110) return '#dc2626'; // rose-600
-      if (sys >= 140 || dia >= 90) return '#ea580c'; // orange-600
-      if ((sys >= 130 && sys <= 139) || (dia >= 80 && dia <= 89)) return '#d97706'; // amber-600
-      if (sys >= 120 && sys <= 129 && dia < 80) return '#ca8a04'; // yellow-600
-      if (sys < 90 && dia < 60) return '#2563eb'; // blue-600
-      return '#16a34a'; // green-600
+      if (sys >= 180 || dia >= 110) return '#991b1b';
+      if (sys >= 140 || dia >= 90) return '#be123c';
+      if (sys >= 130 || dia >= 80) return '#c2410c';
+      if (sys >= 120 && dia < 80) return '#a16207';
+      if (sys < 90 && dia < 60) return '#1d4ed8';
+      return '#15803d';
     }
 
-    // Parse date helper
-    function parseTs(timestamp) {
-      if (!timestamp) return new Date();
-      const clean = timestamp.replace(' ', 'T') + ':00';
-      const d = new Date(clean);
-      return isNaN(d) ? new Date(timestamp) : d;
-    }
-
-    // Fetch and Filter Records
     function loadAndFilter() {
-      const q = qName.value.trim();
-      const from = dateFrom.value;
-      const to = dateTo.value;
+      const qVal = qName.value.trim();
+      const dFrom = dateFrom.value;
+      const dTo = dateTo.value;
       
-      // Determine mode
-      isAllView = !q;
+      let records = db.getRecords();
       
-      let records = [];
-      if (isAllView) {
-        records = db.getRecords();
-        userHeaderBanner.classList.add('hidden');
-        summaryCard.classList.add('hidden');
-      } else {
-        // Query by name or ID
-        const matchedUser = db.getUserByName(q) || db.getUserById(q);
-        if (matchedUser) {
-          records = db.getRecordsByPatientId(matchedUser.user_id);
-          displayBanner(matchedUser);
-        } else {
-          // Fallback search directly in records by search query string
-          records = db.getRecordsByNameOrId(q);
-          userHeaderBanner.classList.add('hidden');
-          summaryCard.classList.add('hidden');
-        }
+      if (qVal) {
+        records = db.getRecordsByNameOrId(qVal);
       }
-
-      // Filter by date range
-      if (from || to) {
-        const fromDate = from ? new Date(from + 'T00:00:00') : null;
-        const toDate = to ? new Date(to + 'T23:59:59') : null;
+      
+      if (dFrom) {
+        records = records.filter(r => r.timestamp.substring(0, 10) >= dFrom);
+      }
+      if (dTo) {
+        records = records.filter(r => r.timestamp.substring(0, 10) <= dTo);
+      }
+      
+      records.sort((a, b) => a.timestamp.localeCompare(b.timestamp));
+      
+      currentRows = records;
+      recordCountBadge.textContent = `${records.length} รายการ`;
+      
+      let activeUser = null;
+      if (qVal) {
+        activeUser = db.getUserByName(qVal) || db.getUserById(qVal);
+      }
+      
+      if (activeUser) {
+        isAllView = false;
+        userHeaderBanner.classList.remove('hidden');
+        bannerName.textContent = activeUser.full_name;
+        bannerId.textContent = `ID: ${activeUser.user_id}`;
         
-        records = records.filter(r => {
-          const d = parseTs(r.timestamp);
-          if (fromDate && d < fromDate) return false;
-          if (toDate && d > toDate) return false;
-          return true;
-        });
-      }
-
-      // Sort chronological order for chart, descending for table
-      const sortedChronological = [...records].sort((a, b) => parseTs(a.timestamp) - parseTs(b.timestamp));
-      const sortedDescending = [...records].sort((a, b) => parseTs(b.timestamp) - parseTs(a.timestamp));
-      
-      currentRows = sortedDescending;
-      
-      // Render components
-      renderChart(sortedChronological);
-      renderTable(sortedDescending);
-      
-      if (!isAllView && sortedDescending.length > 0) {
-        displaySummary(sortedDescending[0]);
+        const sexStr = activeUser.sex === 'male' ? 'ชาย' : 'หญิง';
+        bannerSpecs.textContent = `เพศ: ${sexStr} · วันเกิด: ${activeUser.date_of_birth || '-'} · นน./สส.: ${activeUser.weight_kg || '-'} กก. / ${activeUser.height_cm || '-'} ซม. (BMI: ${activeUser.bmi || '-'})`;
+        bannerConditions.textContent = `โรคประจำตัว: ${activeUser.conditions || 'ไม่มี'} · ยาประจำ: ${activeUser.medications || 'ไม่มี'}`;
+        
+        if (activeUser.face_images && activeUser.face_images.length > 0) {
+          bannerAvatar.src = activeUser.face_images[0].dataUrl;
+          bannerAvatar.classList.remove('hidden');
+          bannerSvg.classList.add('hidden');
+        } else {
+          bannerAvatar.classList.add('hidden');
+          bannerSvg.classList.remove('hidden');
+        }
+        thName.classList.add('hidden');
       } else {
-        summaryCard.classList.add('hidden');
+        isAllView = true;
+        userHeaderBanner.classList.add('hidden');
+        thName.classList.remove('hidden');
       }
-    }
-
-    function displayBanner(user) {
-      bannerName.textContent = user.full_name;
-      bannerId.textContent = `ID: ${user.user_id}`;
-      bannerDob.textContent = `วันเกิด: ${user.date_of_birth || '-'}`;
-      bannerSex.textContent = `เพศ: ${user.sex === 'male' ? 'ชาย' : user.sex === 'female' ? 'หญิง' : '-'}`;
-      bannerPhysique.textContent = `น้ำหนัก-ส่วนสูง: ${user.weight_kg || '-'} กก. / ${user.height_cm || '-'} ซม.`;
-      bannerBmi.textContent = `BMI: ${user.bmi || '-'}`;
-      bannerConditions.textContent = user.conditions || 'ไม่มีโรคประจำตัว';
-      bannerMeds.textContent = user.medications || 'ไม่มีรายการยาบันทึก';
       
-      userHeaderBanner.classList.remove('hidden');
+      renderTable(records);
+      renderChart(records);
     }
 
-    function displaySummary(latestRecord) {
-      sumDate.textContent = latestRecord.timestamp;
-      sumBP.textContent = `SYS ${latestRecord.SYS} / DIA ${latestRecord.DIA} mmHg (ชีพจร ${latestRecord.PULSE})`;
-      sumInterp.textContent = getBPInterpretationText(latestRecord.SYS, latestRecord.DIA);
-      sumMeta.textContent = `วัดขณะ: ท่า${postureText(latestRecord.posture)} · แขน${armText(latestRecord.arm)} · ก่อนวัด: ${latestRecord.pre_measure_behavior || '-'} · อาการ: ${latestRecord.symptoms || '-'}`;
-      
-      summaryCard.classList.remove('hidden');
-    }
-
-    // Render Table
     function renderTable(rows) {
       tblBody.innerHTML = '';
-      
-      // Adjust table columns depending on view mode
-      const thPosture = document.getElementById('thPosture');
-      const thArm = document.getElementById('thArm');
-      const thBehavior = document.getElementById('thBehavior');
-      const thSymptoms = document.getElementById('thSymptoms');
-      
-      if (isAllView) {
-        thPosture.classList.add('hidden');
-        thArm.classList.add('hidden');
-        thBehavior.classList.add('hidden');
-        thSymptoms.classList.add('hidden');
-      } else {
-        thPosture.classList.remove('hidden');
-        thArm.classList.remove('hidden');
-        thBehavior.classList.remove('hidden');
-        thSymptoms.classList.remove('hidden');
-      }
-      
       if (rows.length === 0) {
-        tableEmptyState.classList.remove('hidden');
+        tblBody.innerHTML = `<tr><td colspan="8" class="p-8 text-center text-slate-400 font-medium">ไม่พบประวัติความดันโลหิตตามเงื่อนไขที่ระบุ</td></tr>`;
         return;
       }
-      tableEmptyState.classList.add('hidden');
       
-      rows.forEach(r => {
+      const displayRows = [...rows].reverse();
+      
+      displayRows.forEach(r => {
         const tr = document.createElement('tr');
-        tr.className = "hover:bg-slate-50 border-b border-slate-100 text-xs";
+        tr.className = "hover:bg-slate-50 transition border-b border-slate-100";
         
-        const statusText = getBPInterpretationText(r.SYS, r.DIA);
         const statusColor = getBPColor(r.SYS, r.DIA);
         
-        let metaCells = '';
-        if (!isAllView) {
-          metaCells = `
-            <td class="p-3">${postureText(r.posture)}</td>
-            <td class="p-3">${armText(r.arm)}</td>
-            <td class="p-3 max-w-[120px] truncate" title="${r.pre_measure_behavior || ''}">${r.pre_measure_behavior || '-'}</td>
-            <td class="p-3 max-w-[100px] truncate" title="${r.symptoms || ''}">${r.symptoms || '-'}</td>
-          `;
+        let nameCell = '';
+        if (isAllView) {
+          nameCell = `<td class="p-3 font-semibold text-slate-900">${r.name}<br><span class="text-[9px] text-slate-400 font-medium uppercase">ID: ${r.patient_id}</span></td>`;
         }
         
+        let metaCells = `
+          <td class="p-3 text-slate-600">${postureText(r.posture)} / ${armText(r.arm)}</td>
+          <td class="p-3 text-slate-600 text-[11px] leading-tight">
+            ${r.pre_measure_behavior ? `<span class="block">ก่อนวัด: ${r.pre_measure_behavior}</span>` : ''}
+            ${r.symptoms ? `<span class="block text-slate-500 font-medium">อาการ: ${r.symptoms}</span>` : ''}
+          </td>
+        `;
+        
         tr.innerHTML = `
-          <td class="p-3 font-semibold text-slate-500">${r.timestamp}</td>
-          <td class="p-3 font-bold text-slate-900">${r.name}</td>
+          <td class="p-3 font-semibold text-slate-600">${r.timestamp}</td>
+          ${nameCell}
           <td class="p-3 font-bold" style="color: ${statusColor}">${r.SYS}</td>
           <td class="p-3 font-bold" style="color: ${statusColor}">${r.DIA}</td>
-          <td class="p-3 text-slate-800">${r.PULSE}</td>
+          <td class="p-3 text-slate-800 font-semibold">${r.PULSE}</td>
           ${metaCells}
           <td class="p-3 text-center">
-            <button onclick="deleteRecordPrompt('${r.timestamp}')" class="text-rose-600 hover:text-rose-800 font-bold">ลบ</button>
+            <button onclick="deleteRecordPrompt('${r.timestamp}')" class="text-rose-600 hover:text-rose-800 font-medium transition p-1">ลบ</button>
           </td>
         `;
         tblBody.appendChild(tr);
@@ -524,7 +451,15 @@
     }
 
     function deleteRecordPrompt(timestamp) {
-      const ok = confirm(`ต้องการลบรายการประวัติความดันโลหิต ณ วันเวลา "${timestamp}" หรือไม่?`);
+      if (!auth.isAdmin()) {
+        const entered = prompt('ระบบความปลอดภัย: กรุณาระบุรหัสผ่านเจ้าหน้าที่เพื่อลบรายการนี้:');
+        const settings = db.getSettings();
+        if (entered !== settings.adminPassword) {
+          alert('รหัสผ่านไม่ถูกต้อง ยกเลิกการลบข้อมูล');
+          return;
+        }
+      }
+      const ok = confirm(`ต้องการลบรายการประวัติ ณ วันเวลา "${timestamp}" ใช่หรือไม่?`);
       if (ok) {
         db.deleteRecord(timestamp);
         loadAndFilter();
@@ -542,15 +477,12 @@
       if (rows.length === 0) {
         return;
       }
-
-      const showLabels = switchLabels.checked;
       
-      const labels = rows.map(r => r.timestamp.split(' ')[0]); // Display just date to avoid clutter
+      const labels = rows.map(r => r.timestamp.split(' ')[0]);
       const sysData = rows.map(r => r.SYS);
       const diaData = rows.map(r => r.DIA);
       const pulseData = rows.map(r => r.PULSE);
       
-      // Determine colors based on thresholds
       const sysPointsBg = rows.map(r => getBPColor(r.SYS, r.DIA));
       
       chartInstance = new Chart(ctx, {
@@ -561,40 +493,40 @@
             {
               label: 'SYS ตัวบน (mmHg)',
               data: sysData,
-              borderColor: '#ef4444', // red-500
-              backgroundColor: '#ef4444',
-              tension: 0.15,
-              borderWidth: 3,
-              pointRadius: 5,
+              borderColor: '#e11d48',
+              backgroundColor: '#e11d48',
+              tension: 0.1,
+              borderWidth: 2.5,
+              pointRadius: 4,
               pointBackgroundColor: sysPointsBg,
               pointBorderColor: '#fff',
-              pointBorderWidth: 1.5,
+              pointBorderWidth: 1,
               yAxisID: 'y'
             },
             {
               label: 'DIA ตัวล่าง (mmHg)',
               data: diaData,
-              borderColor: '#3b82f6', // blue-500
-              backgroundColor: '#3b82f6',
-              tension: 0.15,
-              borderWidth: 3,
-              pointRadius: 5,
-              pointBackgroundColor: '#3b82f6',
+              borderColor: '#2563eb',
+              backgroundColor: '#2563eb',
+              tension: 0.1,
+              borderWidth: 2.5,
+              pointRadius: 4,
+              pointBackgroundColor: '#2563eb',
               pointBorderColor: '#fff',
-              pointBorderWidth: 1.5,
+              pointBorderWidth: 1,
               yAxisID: 'y'
             },
             {
               label: 'PULSE ชีพจร (bpm)',
               data: pulseData,
-              borderColor: '#10b981', // emerald-500
-              backgroundColor: '#10b981',
-              tension: 0.15,
-              borderWidth: 2,
-              pointRadius: 4,
-              pointBackgroundColor: '#10b981',
+              borderColor: '#059669',
+              backgroundColor: '#059669',
+              tension: 0.1,
+              borderWidth: 1.5,
+              pointRadius: 3,
+              pointBackgroundColor: '#059669',
               pointBorderColor: '#fff',
-              pointBorderWidth: 1.5,
+              pointBorderWidth: 1,
               yAxisID: 'y1'
             }
           ]
@@ -607,20 +539,19 @@
             y: {
               min: 40,
               max: 220,
-              ticks: { stepSize: 20 },
-              grid: { color: '#f1f5f9' },
-              title: { display: true, text: 'ความดันโลหิต (mmHg)', font: { weight: 'bold' } }
+              ticks: { stepSize: 20, font: { family: 'Sarabun', weight: '500' } },
+              grid: { color: '#f1f5f9' }
             },
             y1: {
               position: 'right',
               min: 30,
               max: 180,
               grid: { drawOnChartArea: false },
-              title: { display: true, text: 'ชีพจร (ครั้ง/นาที)', font: { weight: 'bold' } }
+              ticks: { font: { family: 'Sarabun', weight: '500' } }
             }
           },
           plugins: {
-            legend: { position: 'top', labels: { boxWidth: 12, font: { weight: 'bold' } } }
+            legend: { position: 'top', labels: { boxWidth: 10, font: { family: 'Sarabun', size: 11, weight: '500' } } }
           }
         }
       });
@@ -633,40 +564,36 @@
     // Handle PDF Generation client-side
     btnExportPdf.addEventListener('click', async () => {
       if (isAllView) {
-        alert("โปรดระบุรายชื่อหรือรหัส ID ของผู้ป่วยรายใดรายหนึ่งด้านบนก่อนดาวน์โหลดรายงานทางการแพทย์แบบเฉพาะเจาะจง!");
+        alert("โปรดระบุชื่อหรือรหัสผู้ป่วยด้านบนก่อนส่งออกรายงาน PDF เฉพาะบุคคล");
         return;
       }
       
       if (currentRows.length === 0) {
-        alert("ไม่มีข้อมูลประวัติการวัดความดันเพื่อดาวน์โหลด!");
+        alert("ไม่มีข้อมูลประวัติการวัดความดันเพื่อดาวน์โหลด");
         return;
       }
       
       const qVal = qName.value.trim();
       const activeUser = db.getUserByName(qVal) || db.getUserById(qVal);
       if (!activeUser) {
-        alert("กรุณาเลือกผู้ป่วยในทะเบียนให้ตรงห้องตรวจก่อนส่งออก PDF");
+        alert("กรุณาเลือกผู้ป่วยในระบบให้ถูกต้องก่อนส่งออก PDF");
         return;
       }
 
-      setStatus("กำลังจัดเตรียมและแปลงรายงาน PDF...");
       btnExportPdf.disabled = true;
       
-      // 1. Populate the hidden PDF report layout
       pdfReportDate.textContent = new Date().toLocaleString('th-TH');
       pdfUserName.textContent = activeUser.full_name;
       pdfUserId.textContent = activeUser.user_id;
       pdfUserSex.textContent = `${activeUser.sex === 'male' ? 'ชาย' : 'หญิง'} (เกิด: ${activeUser.date_of_birth || '-'})`;
       
       const bmiStr = activeUser.bmi ? ` (BMI: ${activeUser.bmi})` : '';
-      pdfUserPhysique.textContent = `${activeUser.weight_kg || '-'} กิโลกรัม / ${activeUser.height_cm || '-'} เซนติเมตร${bmiStr}`;
-      pdfUserConditions.innerHTML = `<strong>โรคประจำตัว:</strong> ${activeUser.conditions || 'ไม่มี'} <br> <strong>ยาที่ใช้รักษา:</strong> ${activeUser.medications || 'ไม่มี'}`;
+      pdfUserPhysique.textContent = `${activeUser.weight_kg || '-'} กก. / ${activeUser.height_cm || '-'} ซม.${bmiStr}`;
+      pdfUserConditions.innerHTML = `<strong>โรคประจำตัว:</strong> ${activeUser.conditions || 'ไม่มี'} <br> <strong>ยาประจำตัว:</strong> ${activeUser.medications || 'ไม่มี'}`;
       
-      // Grab Chart as Image from current Canvas
       const chartCanvas = document.getElementById('chartAll');
       pdfChartImg.src = chartCanvas.toDataURL('image/png');
       
-      // Populate PDF table copy
       pdfTblBody.innerHTML = '';
       currentRows.forEach(r => {
         const tr = document.createElement('tr');
@@ -686,18 +613,15 @@
         pdfTblBody.appendChild(tr);
       });
 
-      // Show container temporarily offscreen (handled by css top/left)
-      // Render to image using html2canvas
       try {
         const canvas = await html2canvas(pdfReportContainer, {
-          scale: 2, // Retain sharp readability
+          scale: 2,
           useCORS: true
         });
         
         const imgData = canvas.toDataURL('image/jpeg', 0.95);
         const { jsPDF } = window.jspdf;
         
-        // A4 page setup (width: 210mm, height: 297mm)
         const pdf = new jsPDF('p', 'mm', 'a4');
         const imgWidth = 210;
         const pageHeight = 295;
@@ -717,17 +641,14 @@
         }
         
         pdf.save(`BP_Report_${activeUser.user_id}_${activeUser.full_name.replace(/\s+/g, '_')}.pdf`);
-        setStatus("ดาวน์โหลดรายงานความดันโลหิตเรียบร้อยแล้ว!");
       } catch (err) {
         console.error(err);
         alert("เกิดข้อผิดพลาดในการประมวลผล PDF: " + err.message);
-        setStatus("เกิดข้อผิดพลาดในการส่งออก PDF", true);
       } finally {
         btnExportPdf.disabled = false;
       }
     });
 
-    // Wire buttons search/all
     btnSearch.addEventListener('click', () => {
       loadAndFilter();
     });
@@ -739,20 +660,16 @@
       if (flatpickrFrom) flatpickrFrom.clear();
       if (flatpickrTo) flatpickrTo.clear();
       
-      // Update URL parameters
       window.history.replaceState({}, document.title, window.location.pathname);
-      
       loadAndFilter();
     });
 
-    // Auto-trigger load when user hits Enter
     qName.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') {
         loadAndFilter();
       }
     });
 
-    // Check URL parameters for direct routing (e.g. from homepage save confirmation link)
     function checkUrlRouting() {
       const params = new URLSearchParams(window.location.search);
       const nameParam = params.get('name');
@@ -764,11 +681,10 @@
     // Init Page
     window.addEventListener('load', () => {
       initDatePickers();
-      checkUrlRouting();
       loadUsersDatalist();
+      checkUrlRouting();
       loadAndFilter();
     });
   </script>
-
 </body>
 </html>

@@ -3,256 +3,198 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>จัดการระบบ - Smart BP Reader</title>
-  <!-- Tailwind CSS -->
+  <title>ตั้งค่าระบบ - Smart BP Reader</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Inter', 'Sarabun', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
-  </style>
+  <link rel="stylesheet" href="static/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased font-sans">
 
-  <!-- Password Protected Login Overlay -->
-  <div id="loginOverlay" class="fixed inset-0 z-[100] bg-slate-900 flex items-center justify-center p-4">
-    <div class="bg-white p-8 rounded-xl max-w-sm w-full border border-slate-200 shadow-xl space-y-6">
-      <div class="text-center">
-        <div class="bg-teal-500 p-3 rounded-full text-slate-900 inline-block mb-3">
-          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-          </svg>
-        </div>
-        <h2 class="text-lg font-bold text-slate-900">ผู้ดูแลระบบ (Admin)</h2>
-        <p class="text-xs text-slate-500 mt-1">กรุณากรอกรหัสผ่านเพื่อเข้าใช้งานเครื่องมือผู้ดูแลระบบ</p>
-      </div>
-
-      <form id="loginForm" class="space-y-4">
+  <header class="header-gov text-white shadow-sm sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 py-3 flex flex-col lg:flex-row items-center justify-between gap-3">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="static/logosstc.png" alt="SSTC" class="h-10 w-auto opacity-95">
         <div>
-          <label for="adminPass" class="block text-xs font-semibold text-slate-600 mb-1">รหัสผ่านสำหรับเข้าถึง *</label>
-          <input type="password" id="adminPass" required class="w-full border border-slate-300 rounded-lg py-2 px-3 text-sm focus:outline-none focus:border-teal-500 font-medium">
+          <h1 class="text-base font-bold text-white tracking-tight">SMART BP READER</h1>
+          <p class="text-[11px] text-slate-400 font-medium">ระบบอ่านค่าความดันโลหิตด้วยเทคโนโลยีปัญญาประดิษฐ์ · วิทยาลัยเทคนิคสมุทรสงคราม</p>
         </div>
-        <div id="loginError" class="text-xs text-rose-600 font-bold hidden">รหัสผ่านเข้าใช้งานไม่ถูกต้อง!</div>
-        <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-2.5 rounded-lg text-sm transition">ยืนยันรหัสผ่าน</button>
-      </form>
-      <div class="text-[10px] text-center text-slate-400">รหัสผ่านเริ่มต้นของระบบคือ <strong>admin</strong></div>
-    </div>
-  </div>
-
-  <!-- Header Section -->
-  <header class="bg-slate-900 text-white shadow-md border-b border-slate-800">
-    <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
-      <div class="flex items-center gap-3">
-        <div class="bg-teal-500 p-2 rounded-lg text-slate-900">
-          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-          </svg>
-        </div>
-        <div>
-          <h1 class="text-xl font-bold tracking-tight">ระบบอ่านค่าความดันโลหิตด้วยปัญญาประดิษฐ์</h1>
-          <p class="text-xs text-slate-400">พัฒนาโดย วิทยาลัยเทคนิคสมุทรสงคราม (Smart BP Reader)</p>
-        </div>
-      </div>
-      
-      <!-- Navigation Links -->
-      <nav class="flex flex-wrap items-center gap-1 text-sm font-medium">
-        <a href="index.html" class="px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 hover:text-white transition">หน้าแรก</a>
-        <a href="history.html" class="px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 hover:text-white transition">ประวัติ/กราฟ</a>
-        <a href="guide.html" class="px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 hover:text-white transition">เกณฑ์/คำอธิบาย</a>
-        <a href="register.html" class="px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 hover:text-white transition">ลงทะเบียน</a>
-        <a href="profiles.html" class="px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 hover:text-white transition">โปรไฟล์ผู้ใช้</a>
-        <a href="management.html" class="px-3 py-2 rounded-md bg-slate-800 text-teal-400 border border-slate-700">จัดการระบบ</a>
+      </a>
+      <nav class="flex items-center gap-1 text-xs font-medium text-slate-300 flex-wrap justify-center">
+        <a href="index.html" class="px-3.5 py-1.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">หน้าแรก</a>
+        <a href="history.html" class="px-3.5 py-1.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">ประวัติสุขภาพ/กราฟ</a>
+        <a href="guide.html" class="px-3.5 py-1.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">เกณฑ์การประเมิน</a>
+        <a href="register.html" class="px-3.5 py-1.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">ลงทะเบียนผู้ป่วย</a>
+        <a href="profiles.html" class="px-3.5 py-1.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">แฟ้มทะเบียนประวัติ</a>
+        <a href="management.html" class="nav-icon-only p-1.5 rounded-lg bg-blue-700 text-white transition" title="ตั้งค่าระบบ">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+        </a>
+        <div id="navAuthContainer" class="flex items-center gap-2 ml-auto pl-3 border-l border-slate-700"></div>
       </nav>
     </div>
   </header>
 
-  <!-- Main Container -->
-  <main class="flex-grow max-w-4xl w-full mx-auto px-4 py-8 space-y-8">
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      
-      <!-- Left Column: Webhooks & Credentials Settings -->
-      <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-6">
-        <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-          <svg class="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
-          </svg>
-          กำหนดค่าระบบการแจ้งเตือน
+  <main class="flex-grow max-w-5xl w-full mx-auto px-4 md:px-6 py-6">
+    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-5">
+
+      <div class="border-b border-slate-100 pb-3">
+        <h2 class="text-xs font-semibold text-slate-900 uppercase tracking-tight flex items-center gap-2">
+          <svg class="w-4 h-4 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+          <span>การตั้งค่าทั่วไปและการจัดการฐานข้อมูลระบบ</span>
         </h2>
-        
-        <form id="settingsForm" class="space-y-4 text-sm">
-          <div>
-            <label for="discordUrl" class="block text-xs font-semibold text-slate-600 mb-1">Discord Webhook URL</label>
-            <input type="url" id="discordUrl" class="w-full border border-slate-300 rounded-lg py-2 px-3 text-sm focus:outline-none focus:border-teal-500 font-medium">
-            <p class="text-[10px] text-slate-400 mt-1">ส่งผลการวิเคราะห์ความดันและภาพสรุปการวัดไปยังห้องแชท Discord อัตโนมัติ</p>
-          </div>
-          
-          <div>
-            <label for="telegramToken" class="block text-xs font-semibold text-slate-600 mb-1">Telegram Bot Token</label>
-            <input type="text" id="telegramToken" placeholder="เช่น 1234567890:ABCdefGhI..." class="w-full border border-slate-300 rounded-lg py-2 px-3 text-sm focus:outline-none focus:border-teal-500">
-          </div>
-          
-          <div>
-            <label for="telegramChatId" class="block text-xs font-semibold text-slate-600 mb-1">Telegram Default Chat ID</label>
-            <input type="text" id="telegramChatId" placeholder="เช่น -1001234567890 หรือ 987654321" class="w-full border border-slate-300 rounded-lg py-2 px-3 text-sm focus:outline-none focus:border-teal-500">
-            <p class="text-[10px] text-slate-400 mt-1">Chat ID ของกลุ่มหรือผู้ใช้ที่ต้องการรับสัญญาณเตือนรายบุคคล</p>
-          </div>
-          
-          <div class="border-t border-slate-100 pt-4">
-            <label for="newAdminPass" class="block text-xs font-semibold text-slate-600 mb-1">เปลี่ยนรหัสผ่านผู้ดูแลระบบ (Admin Password)</label>
-            <input type="password" id="newAdminPass" placeholder="ป้อนรหัสผ่านใหม่หากต้องการแก้ไข" class="w-full border border-slate-300 rounded-lg py-2 px-3 text-sm focus:outline-none focus:border-teal-500">
-          </div>
-          
-          <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-2.5 rounded-lg text-xs transition">บันทึกพารามิเตอร์การตั้งค่า</button>
-        </form>
+        <p class="text-[11px] text-slate-500 mt-0.5">ปรับแต่งการเชื่อมต่อ Webhook ภายนอก และเครื่องมือสำรองข้อมูล CSV</p>
       </div>
 
-      <!-- Right Column: Database backups CSV/JSON & Clear database -->
-      <div class="space-y-6">
-        
-        <!-- Backups Export/Import -->
-        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
-          <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-            <svg class="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
-            </svg>
-            ส่งออกและนำเข้าสำรองข้อมูล (CSV)
-          </h2>
-          <p class="text-xs text-slate-500">คุณสามารถส่งออกประวัติหรือรายชื่อผู้ป่วยทั้งหมดออกมาเป็นไฟล์ CSV หรือนำไฟล์เดิมจากตัวเซิร์ฟเวอร์ Flask เข้ามาเพิ่มได้</p>
-          
-          <div class="grid grid-cols-2 gap-3 text-xs">
-            <button onclick="exportCSV('records')" class="bg-slate-100 hover:bg-slate-200 border border-slate-300 font-semibold py-2 rounded text-slate-700 transition">ส่งออกบันทึกความดัน (CSV)</button>
-            <button onclick="exportCSV('users')" class="bg-slate-100 hover:bg-slate-200 border border-slate-300 font-semibold py-2 rounded text-slate-700 transition">ส่งออกรายชื่อผู้ใช้ (CSV)</button>
-          </div>
-          
-          <div class="border-t border-slate-100 pt-4 space-y-3">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+
+        <!-- Webhooks & Auth -->
+        <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
+          <h3 class="text-[11px] font-semibold text-slate-900 border-b border-slate-200 pb-2 uppercase tracking-tight">การเชื่อมต่อสัญญาณแจ้งเตือนภายนอก</h3>
+
+          <form id="settingsForm" class="space-y-3.5 text-xs">
             <div>
-              <label class="block text-xs font-semibold text-slate-600 mb-1">นำเข้าไฟล์ประวัติความดัน (CSV)</label>
-              <input type="file" id="importRecordsFile" accept=".csv" class="text-xs w-full block text-slate-500 file:mr-4 file:py-1 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200">
+              <div class="flex justify-between items-center mb-1">
+                <label for="discordUrl" class="text-[10px] font-semibold text-slate-600">Discord Webhook URL</label>
+                <button type="button" onclick="testWebhook('discord')" class="text-[10px] font-medium text-blue-700 hover:underline">ทดสอบ Discord</button>
+              </div>
+              <input type="url" id="discordUrl" class="w-full border border-slate-300 rounded-lg py-1.5 px-3 text-xs bg-white focus:outline-none focus:border-blue-600 font-medium">
+              <p class="text-[10px] text-slate-400 mt-0.5">ส่งรายงานผลการคัดกรองความดันเข้ากลุ่ม Discord</p>
             </div>
+
             <div>
-              <label class="block text-xs font-semibold text-slate-600 mb-1">นำเข้าไฟล์รายชื่อผู้ป่วย (CSV)</label>
-              <input type="file" id="importUsersFile" accept=".csv" class="text-xs w-full block text-slate-500 file:mr-4 file:py-1 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200">
+              <div class="flex justify-between items-center mb-1">
+                <label for="telegramToken" class="text-[10px] font-semibold text-slate-600">Telegram Bot Token</label>
+                <button type="button" onclick="testWebhook('telegram')" class="text-[10px] font-medium text-blue-700 hover:underline">ทดสอบ Telegram</button>
+              </div>
+              <input type="text" id="telegramToken" placeholder="เช่น 123456789:AA..." class="w-full border border-slate-300 rounded-lg py-1.5 px-3 text-xs bg-white focus:outline-none focus:border-blue-600 font-medium">
+            </div>
+
+            <div>
+              <label for="telegramChatId" class="block text-[10px] font-semibold text-slate-600 mb-1">Telegram Chat ID (ปลายทาง)</label>
+              <input type="text" id="telegramChatId" placeholder="เช่น -100123456" class="w-full border border-slate-300 rounded-lg py-1.5 px-3 text-xs bg-white focus:outline-none focus:border-blue-600 font-medium">
+            </div>
+
+            <div class="border-t border-slate-200 pt-3">
+              <label for="newAdminPass" class="block text-[10px] font-semibold text-slate-600 mb-1">เปลี่ยนรหัสผ่านเจ้าหน้าที่</label>
+              <input type="password" id="newAdminPass" placeholder="ป้อนรหัสผ่านใหม่เพื่ออัปเดต" class="w-full border border-slate-300 rounded-lg py-1.5 px-3 text-xs bg-white focus:outline-none focus:border-blue-600 font-semibold">
+            </div>
+
+            <button type="submit" class="w-full bg-blue-700 hover:bg-blue-800 text-white font-medium py-2 rounded-lg transition shadow-sm text-xs">บันทึกการตั้งค่า</button>
+          </form>
+        </div>
+
+        <!-- CSV Tools & Danger Zone -->
+        <div class="space-y-5">
+          <!-- Backup -->
+          <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-3.5">
+            <h3 class="text-[11px] font-semibold text-slate-900 border-b border-slate-200 pb-2 uppercase tracking-tight">เครื่องมือจัดการสำรองข้อมูล (CSV)</h3>
+            <div class="grid grid-cols-2 gap-2 text-xs">
+              <button onclick="exportCSV('records')" class="bg-white hover:bg-slate-100 border border-slate-300 font-medium py-2 px-3 rounded-lg text-slate-700 transition">ส่งออกประวัติความดัน</button>
+              <button onclick="exportCSV('users')" class="bg-white hover:bg-slate-100 border border-slate-300 font-medium py-2 px-3 rounded-lg text-slate-700 transition">ส่งออกทะเบียนผู้ป่วย</button>
+            </div>
+
+            <div class="border-t border-slate-200 pt-3 space-y-2.5 text-xs">
+              <div>
+                <label class="block text-[10px] font-semibold text-slate-600 mb-1">นำเข้าบันทึกความดันโลหิต (.csv)</label>
+                <input type="file" id="importRecordsFile" accept=".csv" class="text-xs w-full block text-slate-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border file:border-slate-300 file:text-xs file:font-medium file:bg-white file:text-slate-700 hover:file:bg-slate-100 border border-slate-300 rounded-lg p-1 bg-white">
+              </div>
+              <div>
+                <label class="block text-[10px] font-semibold text-slate-600 mb-1">นำเข้าทะเบียนผู้ป่วย (.csv)</label>
+                <input type="file" id="importUsersFile" accept=".csv" class="text-xs w-full block text-slate-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border file:border-slate-300 file:text-xs file:font-medium file:bg-white file:text-slate-700 hover:file:bg-slate-100 border border-slate-300 rounded-lg p-1 bg-white">
+              </div>
+            </div>
+          </div>
+
+          <!-- Danger Zone -->
+          <div class="bg-rose-50/60 p-5 rounded-xl border border-rose-200 space-y-3">
+            <h3 class="text-[11px] font-semibold text-rose-900 border-b border-rose-200 pb-2 uppercase tracking-tight">พื้นที่จัดการข้อมูลขั้นวิกฤต (Danger Zone)</h3>
+            <p class="text-[10px] text-rose-700 font-medium leading-relaxed">การดำเนินการในส่วนนี้จะลบข้อมูลออกอย่างถาวรจากเบราว์เซอร์เครื่องนี้</p>
+            <div class="flex flex-col gap-2 text-xs">
+              <button onclick="clearDatabase('records')" class="bg-white hover:bg-rose-50 border border-rose-200 text-rose-700 font-medium py-2 rounded-lg transition">ล้างบันทึกประวัติความดันทั้งหมด</button>
+              <button onclick="clearDatabase('users')" class="bg-white hover:bg-rose-50 border border-rose-200 text-rose-700 font-medium py-2 rounded-lg transition">ล้างประวัติผู้ป่วยและรูปถ่ายสแกนใบหน้าทั้งหมด</button>
             </div>
           </div>
         </div>
-
-        <!-- Danger Zone -->
-        <div class="bg-white p-6 rounded-xl border border-red-200 shadow-sm space-y-4">
-          <h2 class="text-lg font-bold text-rose-800 flex items-center gap-2">
-            <svg class="w-5 h-5 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-            </svg>
-            พื้นที่ความเสี่ยง (Danger Zone)
-          </h2>
-          <p class="text-xs text-slate-500">ระมัดระวัง! คำสั่งเหล่านี้จะเป็นการล้างฐานข้อมูลประวัติทั้งหมดของเบราว์เซอร์อย่างถาวร ไม่สามารถกู้คืนกลับมาได้</p>
-          
-          <div class="flex flex-col gap-2.5 text-xs">
-            <button onclick="clearDatabase('records')" class="bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 font-bold py-2.5 rounded transition">ล้างประวัติการบันทึกความดันทั้งหมด</button>
-            <button onclick="clearDatabase('users')" class="bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 font-bold py-2.5 rounded transition">ล้างข้อมูลประวัติและผู้ใช้ลงทะเบียนทั้งหมด</button>
-          </div>
-        </div>
-
       </div>
     </div>
-
   </main>
 
-  <footer class="bg-slate-900 text-slate-400 text-center py-6 border-t border-slate-800 text-xs mt-12">
-    © 2026 วิทยาลัยเทคนิคสมุทรสงคราม · การศึกษาเพื่อพัฒนาชุมชนและการแพทย์ทางไกล
+  <footer class="bg-slate-900 text-slate-400 text-center py-5 border-t border-slate-800 text-xs mt-auto">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-2">
+      <div class="flex items-center gap-2">
+        <img src="static/logosstc.png" alt="SSTC" class="h-5 w-auto opacity-75">
+        <span class="font-medium text-slate-300">SMART BP READER</span>
+        <span>· วิทยาลัยเทคนิคสมุทรสงคราม</span>
+      </div>
+      <p class="text-[11px] text-slate-400">การศึกษาและพัฒนาระบบคัดกรองสุขภาพทางไกล (Telemedicine Portal)</p>
+    </div>
   </footer>
 
-  <!-- Scripts -->
   <script src="js/db.js"></script>
+  <script src="js/notifications.js"></script>
+  <script src="js/auth.js"></script>
+
   <script>
-    const loginOverlay = document.getElementById('loginOverlay');
-    const loginForm = document.getElementById('loginForm');
-    const adminPassInput = document.getElementById('adminPass');
-    const loginError = document.getElementById('loginError');
-    
     const settingsForm = document.getElementById('settingsForm');
     const discordUrl = document.getElementById('discordUrl');
     const telegramToken = document.getElementById('telegramToken');
     const telegramChatId = document.getElementById('telegramChatId');
     const newAdminPass = document.getElementById('newAdminPass');
-    
+
     const importRecordsFile = document.getElementById('importRecordsFile');
     const importUsersFile = document.getElementById('importUsersFile');
 
-    // Authentication Gate check on load
-    function checkAuth() {
-      const isAuthed = sessionStorage.getItem('adminAuthed');
-      if (isAuthed === 'true') {
-        loginOverlay.classList.add('hidden');
-        populateSettings();
-      }
-    }
-
-    loginForm.addEventListener('submit', (e) => {
-      e.preventDefault();
+    function loadSettingsForm() {
       const settings = db.getSettings();
-      const entered = adminPassInput.value;
-      
-      if (entered === settings.adminPassword) {
-        sessionStorage.setItem('adminAuthed', 'true');
-        loginOverlay.classList.add('hidden');
-        loginError.classList.add('hidden');
-        populateSettings();
-      } else {
-        loginError.classList.remove('hidden');
-        adminPassInput.value = '';
-      }
-    });
-
-    // Populate Settings to form
-    function populateSettings() {
-      const settings = db.getSettings();
-      discordUrl.value = settings.discordWebhook || '';
-      telegramToken.value = settings.telegramToken || '';
-      telegramChatId.value = settings.telegramChatId || '';
-    }
-
-    // Save Settings
-    settingsForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const current = db.getSettings();
-      
-      const payload = {
-        ...current,
-        discordWebhook: discordUrl.value.trim(),
-        telegramToken: telegramToken.value.trim(),
-        telegramChatId: telegramChatId.value.trim()
-      };
-      
-      if (newAdminPass.value.trim()) {
-        payload.adminPassword = newAdminPass.value.trim();
-      }
-      
-      db.saveSettings(payload);
-      alert("บันทึกการปรับปรุงระบบเรียบร้อยแล้ว!");
+      discordUrl.value = settings.discordWebhookUrl || settings.discordWebhook || '';
+      telegramToken.value = settings.telegramBotToken || settings.telegramToken || '';
+      telegramChatId.value = settings.telegramDefaultChatId || settings.telegramChatId || '';
       newAdminPass.value = '';
-    });
+    }
 
-    // CSV Exports
-    function exportCSV(type) {
-      const csvContent = db.exportToCSV(type);
-      if (!csvContent) {
-        alert("ไม่มีข้อมูลที่จะส่งออก!");
+    async function testWebhook(type) {
+      if (typeof notifications === 'undefined') {
+        alert("ระบบบริการแจ้งเตือนไม่พร้อมใช้งาน");
         return;
       }
-      
-      const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
+      alert(`กำลังส่งข้อความทดสอบไปยัง ${type.toUpperCase()}...`);
+      const ok = await notifications.testNotification(type);
+      if (ok) {
+        alert(`ส่งสัญญาณทดสอบไปยัง ${type.toUpperCase()} สำเร็จ`);
+      } else {
+        alert(`ไม่สามารถส่งสัญญาณไปยัง ${type.toUpperCase()} ได้ กรุณาตรวจสอบ URL หรือ Token`);
+      }
+    }
+
+    settingsForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const settings = db.getSettings();
+
+      settings.discordWebhookUrl = discordUrl.value.trim();
+      settings.telegramBotToken = telegramToken.value.trim();
+      settings.telegramDefaultChatId = telegramChatId.value.trim();
+
+      const newPassVal = newAdminPass.value.trim();
+      if (newPassVal) settings.adminPassword = newPassVal;
+
+      db.saveSettings(settings);
+      alert("บันทึกการตั้งค่าเรียบร้อย");
+      loadSettingsForm();
+    });
+
+    function exportCSV(type) {
+      const csvContent = db.exportToCSV(type);
+      if (!csvContent) { alert("ไม่มีข้อมูลสำหรับดาวน์โหลด"); return; }
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `backup_${type}_${new Date().toISOString().substring(0,10)}.csv`;
-      a.click();
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `${type}_backup_${new Date().toISOString().substring(0, 10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
       URL.revokeObjectURL(url);
     }
 
-    // CSV Imports setup listeners
     importRecordsFile.addEventListener('change', (e) => {
       handleImport(e.target.files[0], 'records');
       importRecordsFile.value = '';
@@ -265,39 +207,32 @@
 
     function handleImport(file, type) {
       if (!file) return;
-      
       const reader = new FileReader();
-      reader.onload = function(e) {
+      reader.onload = (e) => {
         const text = e.target.result;
         try {
           const count = db.importFromCSV(text, type);
-          alert(`นำเข้าข้อมูลไฟล์ ${type} สำเร็จ! ทั้งหมด ${count} รายการได้รับการบันทึกลงเบราว์เซอร์`);
+          alert(`นำเข้าข้อมูล ${type} สำเร็จ ทั้งหมด ${count} รายการ`);
         } catch (err) {
-          alert(`เกิดข้อผิดพลาดในการนำเข้าไฟล์ CSV: ` + err.message);
+          alert(`เกิดข้อผิดพลาดในการนำเข้า: ` + err.message);
         }
       };
       reader.readAsText(file, 'utf-8');
     }
 
-    // Clear databases
     function clearDatabase(type) {
-      const txt = type === 'records' ? 'ประวัติการบันทึกความดันโลหิตทั้งหมด' : 'ข้อมูลประวัติผู้ป่วยและใบหน้าลงทะเบียนทั้งหมด';
-      const ok = confirm(`⚠️ ยืนยันการลบ: คุณแน่ใจที่จะลบ "${txt}" หรือไม่?\n\nการกระทำนี้จะไม่สามารถย้อนกลับคืนข้อมูลได้!`);
-      if (ok) {
-        if (type === 'records') {
-          db.clearAllRecords();
-        } else {
-          db.clearAllUsers();
-        }
-        alert("ทำความสะอาดลบฐานข้อมูลเรียบร้อยแล้ว");
+      const txt = type === 'records' ? 'ประวัติบันทึกทั้งหมด' : 'ข้อมูลผู้ป่วยและรูปถ่ายทั้งหมด';
+      if (confirm(`ยืนยันลบถาวร: คุณแน่ใจที่จะลบ "${txt}" ใช่หรือไม่?`)) {
+        if (type === 'records') { db.clearAllRecords(); } else { db.clearAllUsers(); }
+        alert("ล้างฐานข้อมูลเสร็จสมบูรณ์");
       }
     }
 
-    // Startup check
+    window.loadSettingsForm = loadSettingsForm;
+
     window.addEventListener('load', () => {
-      checkAuth();
+      if (auth.isAdmin()) loadSettingsForm();
     });
   </script>
-
 </body>
 </html>

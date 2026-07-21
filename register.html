@@ -3,227 +3,192 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ลงทะเบียนผู้ใช้ใหม่ - Smart BP Reader</title>
-  <!-- Tailwind CSS -->
+  <title>ลงทะเบียนผู้ป่วยใหม่ - Smart BP Reader</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Inter', 'Sarabun', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
-  </style>
+  <link rel="stylesheet" href="static/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1/dist/face-api.min.js"></script>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased font-sans">
 
-  <!-- Header Section -->
-  <header class="bg-slate-900 text-white shadow-md border-b border-slate-800">
-    <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
-      <div class="flex items-center gap-3">
-        <div class="bg-teal-500 p-2 rounded-lg text-slate-900">
-          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
-          </svg>
-        </div>
+  <header class="header-gov text-white shadow-sm sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 py-3 flex flex-col lg:flex-row items-center justify-between gap-3">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="static/logosstc.png" alt="SSTC" class="h-10 w-auto opacity-95">
         <div>
-          <h1 class="text-xl font-bold tracking-tight">ระบบอ่านค่าความดันโลหิตด้วยปัญญาประดิษฐ์</h1>
-          <p class="text-xs text-slate-400">พัฒนาโดย วิทยาลัยเทคนิคสมุทรสงคราม (Smart BP Reader)</p>
+          <h1 class="text-base font-bold text-white tracking-tight">SMART BP READER</h1>
+          <p class="text-[11px] text-slate-400 font-medium">ระบบอ่านค่าความดันโลหิตด้วยเทคโนโลยีปัญญาประดิษฐ์ · วิทยาลัยเทคนิคสมุทรสงคราม</p>
         </div>
-      </div>
-      
-      <!-- Navigation Links -->
-      <nav class="flex flex-wrap items-center gap-1 text-sm font-medium">
-        <a href="index.html" class="px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 hover:text-white transition">หน้าแรก</a>
-        <a href="history.html" class="px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 hover:text-white transition">ประวัติ/กราฟ</a>
-        <a href="guide.html" class="px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 hover:text-white transition">เกณฑ์/คำอธิบาย</a>
-        <a href="register.html" class="px-3 py-2 rounded-md bg-slate-800 text-teal-400 border border-slate-700">ลงทะเบียน</a>
-        <a href="profiles.html" class="px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 hover:text-white transition">โปรไฟล์ผู้ใช้</a>
-        <a href="management.html" class="ml-2 p-2 rounded-md hover:bg-slate-800 text-slate-400 hover:text-white transition" title="จัดการระบบ">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-          </svg>
+      </a>
+      <nav class="flex items-center gap-1 text-xs font-medium text-slate-300 flex-wrap justify-center">
+        <a href="index.html" class="px-3.5 py-1.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">หน้าแรก</a>
+        <a href="history.html" class="px-3.5 py-1.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">ประวัติสุขภาพ/กราฟ</a>
+        <a href="guide.html" class="px-3.5 py-1.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">เกณฑ์การประเมิน</a>
+        <a href="register.html" class="px-3.5 py-1.5 rounded-lg bg-blue-700 text-white font-medium transition">ลงทะเบียนผู้ป่วย</a>
+        <a href="profiles.html" class="px-3.5 py-1.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">แฟ้มทะเบียนประวัติ</a>
+        <a href="management.html" class="nav-icon-only p-1.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition" title="ตั้งค่าระบบ">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
         </a>
+        <div id="navAuthContainer" class="flex items-center gap-2 ml-auto pl-3 border-l border-slate-700"></div>
       </nav>
     </div>
   </header>
 
-  <!-- Main Container -->
-  <main class="flex-grow max-w-4xl w-full mx-auto px-4 py-8">
-    <div class="bg-white p-6 md:p-8 rounded-xl border border-slate-200 shadow-sm max-w-3xl mx-auto">
-      <div class="mb-6 border-b border-slate-100 pb-4">
-        <h2 class="text-xl font-bold text-slate-900">👥 ลงทะเบียนบันทึกผู้ใช้รายใหม่</h2>
-        <p class="text-xs text-slate-500 mt-1">กรอกข้อมูลส่วนบุคคลและข้อมูลพื้นฐานสุขภาพเพื่อการวัดและวิเคราะห์แนวโน้มอย่างแม่นยำ</p>
+  <main class="flex-grow max-w-4xl w-full mx-auto px-4 md:px-6 py-6">
+    <div class="bg-white p-5 md:p-6 rounded-xl border border-slate-200 shadow-sm max-w-2xl mx-auto space-y-5">
+      <div class="border-b border-slate-100 pb-3">
+        <h2 class="text-xs font-semibold text-slate-900 uppercase tracking-tight flex items-center gap-2">
+          <svg class="w-4 h-4 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path></svg>
+          <span>ขึ้นทะเบียนประวัติผู้ป่วยรายใหม่</span>
+        </h2>
+        <p class="text-[11px] text-slate-500 mt-0.5">กรอกข้อมูลส่วนบุคคลและข้อมูลพื้นฐานด้านสุขภาพเพื่อการจัดเก็บอย่างเป็นระบบ</p>
       </div>
 
-      <form id="registerForm" class="space-y-6">
-        
-        <!-- Section 1: Personal Info -->
-        <div class="space-y-4">
-          <h3 class="text-sm font-bold text-slate-700 flex items-center gap-2">
-            <span class="w-1.5 h-4 bg-teal-500 rounded-full inline-block"></span>
-            1. ข้อมูลรายละเอียดส่วนตัว
-          </h3>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <form id="registerForm" class="space-y-5">
+
+        <!-- 1. Personal -->
+        <div class="space-y-3">
+          <h3 class="text-[11px] font-semibold text-slate-900 uppercase tracking-tight">1. รายละเอียดข้อมูลส่วนบุคคล</h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
             <div class="md:col-span-2">
-              <label for="fullName" class="block text-xs font-semibold text-slate-600 mb-1">ชื่อ-นามสกุล *</label>
-              <input type="text" id="fullName" required placeholder="เช่น นาย รัฐกรณ์ แกลโกศล" class="w-full border border-slate-300 rounded-lg py-2 px-3 text-sm focus:outline-none focus:border-teal-500 font-medium">
+              <label for="fullName" class="block text-[10px] font-semibold text-slate-600 mb-1">ชื่อ-นามสกุลจริง *</label>
+              <input type="text" id="fullName" required placeholder="ระบุชื่อและนามสกุลจริง" class="w-full border border-slate-300 rounded-lg py-1.5 px-3 focus:outline-none focus:border-blue-600 font-semibold bg-white">
             </div>
             <div>
-              <label for="dateOfBirth" class="block text-xs font-semibold text-slate-600 mb-1">วันเกิด *</label>
-              <input type="date" id="dateOfBirth" required class="w-full border border-slate-300 rounded-lg py-2 px-3 text-sm focus:outline-none focus:border-teal-500 font-medium">
+              <label for="dateOfBirth" class="block text-[10px] font-semibold text-slate-600 mb-1">วัน/เดือน/ปีเกิด *</label>
+              <input type="date" id="dateOfBirth" required class="w-full border border-slate-300 rounded-lg py-1.5 px-3 focus:outline-none focus:border-blue-600 font-semibold bg-white">
             </div>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
             <div>
-              <label for="sex" class="block text-xs font-semibold text-slate-600 mb-1">เพศกำเนิด *</label>
-              <select id="sex" required class="w-full border border-slate-300 rounded-lg py-2 px-3 text-sm bg-white focus:outline-none focus:border-teal-500 font-medium">
-                <option value="">— เลือกเพศ —</option>
+              <label for="sex" class="block text-[10px] font-semibold text-slate-600 mb-1">เพศกำเนิด *</label>
+              <select id="sex" required class="w-full border border-slate-300 rounded-lg py-1.5 px-3 bg-white focus:outline-none focus:border-blue-600 font-semibold">
+                <option value="">— ระบุเพศ —</option>
                 <option value="male">ชาย (Male)</option>
                 <option value="female">หญิง (Female)</option>
               </select>
             </div>
             <div>
-              <label for="contactPhone" class="block text-xs font-semibold text-slate-600 mb-1">เบอร์โทรศัพท์ติดต่อ</label>
-              <input type="tel" id="contactPhone" placeholder="เช่น 098-765-4321" class="w-full border border-slate-300 rounded-lg py-2 px-3 text-sm focus:outline-none focus:border-teal-500">
+              <label for="contactPhone" class="block text-[10px] font-semibold text-slate-600 mb-1">หมายเลขโทรศัพท์ติดต่อ</label>
+              <input type="tel" id="contactPhone" placeholder="เช่น 089-123-4567" class="w-full border border-slate-300 rounded-lg py-1.5 px-3 focus:outline-none focus:border-blue-600 bg-white font-medium">
             </div>
           </div>
         </div>
 
-        <!-- Section 2: Health Specs & BMI -->
-        <div class="space-y-4">
-          <h3 class="text-sm font-bold text-slate-700 flex items-center gap-2">
-            <span class="w-1.5 h-4 bg-teal-500 rounded-full inline-block"></span>
-            2. ข้อมูลกายภาพและสรีรวิทยา
-          </h3>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- 2. Physical -->
+        <div class="space-y-3">
+          <h3 class="text-[11px] font-semibold text-slate-900 uppercase tracking-tight">2. ข้อมูลทางกายภาพและสรีรวิทยา</h3>
+          <div class="grid grid-cols-3 gap-3 text-xs">
             <div>
-              <label for="weight" class="block text-xs font-semibold text-slate-600 mb-1">น้ำหนักตัว (กิโลกรัม) *</label>
-              <input type="number" id="weight" step="0.1" min="2" max="400" required placeholder="เช่น 70.5" class="w-full border border-slate-300 rounded-lg py-2 px-3 text-sm focus:outline-none focus:border-teal-500 font-medium">
+              <label for="weight" class="block text-[10px] font-semibold text-slate-600 mb-1">น้ำหนัก (กก.) *</label>
+              <input type="number" step="0.1" id="weight" required placeholder="เช่น 65.5" class="w-full border border-slate-300 rounded-lg py-1.5 px-3 focus:outline-none focus:border-blue-600 font-semibold bg-white text-center">
             </div>
             <div>
-              <label for="height" class="block text-xs font-semibold text-slate-600 mb-1">ส่วนสูง (เซนติเมตร) *</label>
-              <input type="number" id="height" step="0.1" min="30" max="250" required placeholder="เช่น 175.0" class="w-full border border-slate-300 rounded-lg py-2 px-3 text-sm focus:outline-none focus:border-teal-500 font-medium">
+              <label for="height" class="block text-[10px] font-semibold text-slate-600 mb-1">ส่วนสูง (ซม.) *</label>
+              <input type="number" step="0.1" id="height" required placeholder="เช่น 170" class="w-full border border-slate-300 rounded-lg py-1.5 px-3 focus:outline-none focus:border-blue-600 font-semibold bg-white text-center">
             </div>
             <div>
-              <label for="bmi" class="block text-xs font-semibold text-slate-500 mb-1">ดัชนีมวลกาย (BMI)</label>
-              <input type="text" id="bmi" readonly placeholder="คำนวณให้อัตโนมัติ" class="w-full border border-slate-200 bg-slate-50 rounded-lg py-2 px-3 text-sm focus:outline-none text-slate-600 font-bold">
-            </div>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label for="conditions" class="block text-xs font-semibold text-slate-600 mb-1">โรคประจำตัว</label>
-              <input type="text" id="conditions" placeholder="เช่น เบาหวาน, โรคหัวใจโต, ไม่มี" class="w-full border border-slate-300 rounded-lg py-2 px-3 text-sm focus:outline-none focus:border-teal-500">
-            </div>
-            <div>
-              <label for="medications" class="block text-xs font-semibold text-slate-600 mb-1">รายการยาประจำตัวที่ใช้</label>
-              <input type="text" id="medications" placeholder="เช่น ยาลดความดัน Enalapril 10mg" class="w-full border border-slate-300 rounded-lg py-2 px-3 text-sm focus:outline-none focus:border-teal-500">
+              <label for="bmi" class="block text-[10px] font-semibold text-slate-600 mb-1">ค่า BMI</label>
+              <input type="text" id="bmi" readonly placeholder="คำนวณอัตโนมัติ" class="w-full border border-slate-200 bg-slate-50 rounded-lg py-1.5 px-3 text-center font-bold text-blue-700">
             </div>
           </div>
         </div>
 
-        <!-- Section 3: Notification channels -->
-        <div class="space-y-4">
-          <h3 class="text-sm font-bold text-slate-700 flex items-center gap-2">
-            <span class="w-1.5 h-4 bg-teal-500 rounded-full inline-block"></span>
-            3. ช่องทางส่งการแจ้งเตือน (ไม่บังคับ)
-          </h3>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- 3. Medical -->
+        <div class="space-y-3">
+          <h3 class="text-[11px] font-semibold text-slate-900 uppercase tracking-tight">3. ประวัติเจ็บป่วยประจำตัวและยาที่ใช้</h3>
+          <div class="space-y-3 text-xs">
             <div>
-              <label for="notifyEmail" class="block text-xs font-semibold text-slate-600 mb-1">อีเมลติดต่อ (Email)</label>
-              <input type="email" id="notifyEmail" placeholder="เช่น client@example.com" class="w-full border border-slate-300 rounded-lg py-2 px-3 text-sm focus:outline-none focus:border-teal-500">
+              <label for="conditions" class="block text-[10px] font-semibold text-slate-600 mb-1">โรคประจำตัว (คั่นด้วยเครื่องหมายจุลภาค)</label>
+              <input type="text" id="conditions" placeholder="เช่น ความดันโลหิตสูง, เบาหวาน, โรคหัวใจ" class="w-full border border-slate-300 rounded-lg py-1.5 px-3 focus:outline-none focus:border-blue-600 bg-white font-medium">
             </div>
             <div>
-              <label for="notifyTelegram" class="block text-xs font-semibold text-slate-600 mb-1">เลข ID สำหรับ Telegram</label>
-              <input type="text" id="notifyTelegram" placeholder="เช่น chat_id หรือ username" class="w-full border border-slate-300 rounded-lg py-2 px-3 text-sm focus:outline-none focus:border-teal-500">
+              <label for="medications" class="block text-[10px] font-semibold text-slate-600 mb-1">รายการยาประจำตัวและขนาดยาที่ใช้อยู่</label>
+              <input type="text" id="medications" placeholder="เช่น Amlodipine 5mg วันละครั้ง" class="w-full border border-slate-300 rounded-lg py-1.5 px-3 focus:outline-none focus:border-blue-600 bg-white font-medium">
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div>
+                <label for="notifyEmail" class="block text-[10px] font-semibold text-slate-600 mb-1">อีเมลปลายทางรับรายงาน</label>
+                <input type="email" id="notifyEmail" placeholder="patient@example.com" class="w-full border border-slate-300 rounded-lg py-1.5 px-3 focus:outline-none focus:border-blue-600 bg-white font-medium">
+              </div>
+              <div>
+                <label for="notifyTelegram" class="block text-[10px] font-semibold text-slate-600 mb-1">Telegram Chat ID (ส่วนตัว)</label>
+                <input type="text" id="notifyTelegram" placeholder="เช่น 123456789" class="w-full border border-slate-300 rounded-lg py-1.5 px-3 focus:outline-none focus:border-blue-600 bg-white font-medium">
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- Section 4: Face Registration Ellipse Camera Snap -->
-        <div class="space-y-4 bg-slate-50 p-6 rounded-xl border border-slate-200">
-          <h3 class="text-sm font-bold text-slate-700 flex items-center gap-2 border-b border-slate-200 pb-2">
-            <span class="w-1.5 h-4 bg-teal-500 rounded-full inline-block"></span>
-            4. ลงทะเบียนอัตลักษณ์ใบหน้าสำหรับ Face Login (ไม่บังคับ)
-          </h3>
-          <p class="text-xs text-slate-600 leading-relaxed">หากลงทะเบียน ระบบจะจดจำใบหน้าของท่านเพื่อใช้อำนวยความสะดวกในการเข้าสู่ระบบโดยไม่ต้องกรอกชื่อหรือ ID เมื่อวัดความดันโลหิต</p>
-          
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            
-            <!-- Video feed for snapping -->
-            <div>
-              <div class="relative bg-slate-950 aspect-square rounded-lg overflow-hidden border border-slate-800 flex items-center justify-center">
+        <!-- 4. Face Biometrics -->
+        <div class="space-y-3">
+          <h3 class="text-[11px] font-semibold text-slate-900 uppercase tracking-tight">4. ลงทะเบียนสแกนใบหน้า (Face Biometrics)</h3>
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+              <div class="relative bg-slate-950 aspect-square rounded-lg overflow-hidden flex items-center justify-center border border-slate-800">
                 <video id="regVideo" autoplay playsinline muted class="w-full h-full object-cover scale-x-[-1]"></video>
-                <!-- Ellipse frame -->
-                <div class="absolute inset-[10%] border-2 border-teal-400 rounded-full pointer-events-none box-shadow-ellipse border-dashed"></div>
-                <div id="captureHint" class="absolute bottom-3 bg-slate-900/80 text-xs text-white px-3 py-1 rounded-full text-center">กล้องยังปิดอยู่</div>
-              </div>
-              
-              <div class="flex gap-2 mt-3">
-                <button type="button" id="btnCameraOpen" class="flex-1 bg-slate-900 hover:bg-slate-800 text-white font-semibold py-2 rounded text-xs transition">เปิดกล้อง</button>
-                <button type="button" id="btnCameraStop" disabled class="bg-rose-600 hover:bg-rose-700 disabled:bg-slate-200 disabled:text-slate-400 text-white font-semibold py-2 px-3 rounded text-xs transition">ปิด</button>
-                <button type="button" id="btnCameraReset" class="border border-slate-300 hover:bg-slate-100 py-2 px-3 rounded text-xs font-medium text-slate-600">เริ่มสแกนใหม่</button>
-              </div>
-            </div>
-            
-            <!-- Snaps slot display -->
-            <div class="flex flex-col justify-between space-y-4">
-              <span class="text-xs font-bold text-slate-600">สแกน 3 ท่าทางประกอบ:</span>
-              
-              <div class="grid grid-cols-3 gap-2">
-                <!-- Slot 1: Front -->
-                <div class="border border-slate-300 rounded-lg p-2 bg-white text-center flex flex-col justify-between h-[120px]" id="slot0">
-                  <span class="text-[10px] font-bold text-slate-500 block mb-1">1. ⬆ มองตรง</span>
-                  <div class="flex-grow flex items-center justify-center bg-slate-100 rounded overflow-hidden">
-                    <img id="imgSlot0" class="w-full h-full object-cover hidden">
-                    <span id="labelSlot0" class="text-[20px] text-slate-300">⬆</span>
-                  </div>
-                </div>
-                <!-- Slot 2: Left -->
-                <div class="border border-slate-300 rounded-lg p-2 bg-white text-center flex flex-col justify-between h-[120px]" id="slot1">
-                  <span class="text-[10px] font-bold text-slate-500 block mb-1">2. ⬅ หมุนซ้าย</span>
-                  <div class="flex-grow flex items-center justify-center bg-slate-100 rounded overflow-hidden">
-                    <img id="imgSlot1" class="w-full h-full object-cover hidden">
-                    <span id="labelSlot1" class="text-[20px] text-slate-300">⬅</span>
-                  </div>
-                </div>
-                <!-- Slot 3: Right -->
-                <div class="border border-slate-300 rounded-lg p-2 bg-white text-center flex flex-col justify-between h-[120px]" id="slot2">
-                  <span class="text-[10px] font-bold text-slate-500 block mb-1">3. ➡ หมุนขวา</span>
-                  <div class="flex-grow flex items-center justify-center bg-slate-100 rounded overflow-hidden">
-                    <img id="imgSlot2" class="w-full h-full object-cover hidden">
-                    <span id="labelSlot2" class="text-[20px] text-slate-300">➡</span>
-                  </div>
+                <div class="absolute inset-[15%] border-2 border-dashed border-blue-400/70 rounded-full pointer-events-none"></div>
+                <div id="captureHint" class="absolute bottom-2.5 bg-slate-900/90 text-[10px] text-white px-2.5 py-1 rounded font-medium">
+                  กดปุ่ม "เปิดกล้องสแกน" เพื่อเริ่มกระบวนการ
                 </div>
               </div>
-              
-              <div class="bg-teal-50 border border-teal-100 p-3 rounded-lg text-teal-800 text-[11px] leading-relaxed">
-                <strong>💡 วิธีใช้กล้องจำลองอัตลักษณ์:</strong> เมื่อเปิดกล้อง ให้ผู้ใช้มองตรงนิ่งๆ ระบบจะคอยสังเกตและตรวจวิเคราะห์และทำการบันทึกภาพถ่ายอัตโนมัติทีละท่าทางตามเข็มชี้วัดของสัญลักษณ์ลูกศรด้านบน
+
+              <div class="space-y-3">
+                <div class="flex gap-2">
+                  <button type="button" id="btnCameraOpen" class="flex-1 bg-slate-900 hover:bg-slate-800 text-white font-medium py-1.5 px-3 rounded-lg text-xs transition">เปิดกล้องสแกน</button>
+                  <button type="button" id="btnCameraStop" disabled class="border border-slate-300 hover:bg-slate-100 text-slate-700 font-medium py-1.5 px-3 rounded-lg text-xs transition">ปิด</button>
+                  <button type="button" id="btnCameraReset" class="border border-slate-300 hover:bg-slate-100 text-slate-700 font-medium py-1.5 px-3 rounded-lg text-xs transition">เริ่มใหม่</button>
+                </div>
+
+                <div class="grid grid-cols-3 gap-2">
+                  <div id="slot0" class="border border-slate-200 rounded-lg p-1.5 bg-white text-center flex flex-col justify-between h-[90px]">
+                    <span id="labelSlot0" class="text-[9px] text-slate-400 font-medium my-auto">1. มองตรง</span>
+                    <img id="imgSlot0" class="w-full h-full object-cover rounded hidden">
+                  </div>
+                  <div id="slot1" class="border border-slate-200 rounded-lg p-1.5 bg-white text-center flex flex-col justify-between h-[90px]">
+                    <span id="labelSlot1" class="text-[9px] text-slate-400 font-medium my-auto">2. เอียงซ้าย</span>
+                    <img id="imgSlot1" class="w-full h-full object-cover rounded hidden">
+                  </div>
+                  <div id="slot2" class="border border-slate-200 rounded-lg p-1.5 bg-white text-center flex flex-col justify-between h-[90px]">
+                    <span id="labelSlot2" class="text-[9px] text-slate-400 font-medium my-auto">3. เอียงขวา</span>
+                    <img id="imgSlot2" class="w-full h-full object-cover rounded hidden">
+                  </div>
+                </div>
+
+                <p class="text-[10px] text-slate-500 leading-relaxed font-medium bg-white p-2.5 rounded-lg border border-slate-200">
+                  ระบบจะตรวจจับมุมใบหน้าโดยอัตโนมัติและคร็อปภาพจัดเก็บลงฐานข้อมูลเมื่อตรงตามท่าทางที่กำหนด
+                </p>
               </div>
             </div>
           </div>
         </div>
 
-        <div id="messageAlert" class="hidden p-4 rounded-lg text-sm text-center"></div>
+        <div id="messageAlert" class="hidden p-4 rounded-lg text-xs text-center font-semibold"></div>
 
-        <!-- Submit Panel -->
-        <div class="flex gap-4 pt-4 border-t border-slate-100">
-          <button type="button" onclick="window.location.href='index.html'" class="flex-1 border border-slate-300 hover:bg-slate-50 text-slate-700 py-2.5 rounded-lg text-sm font-semibold transition">ย้อนกลับ</button>
-          <button type="submit" class="flex-[2] bg-teal-600 hover:bg-teal-700 text-white font-semibold py-2.5 rounded-lg text-sm transition shadow-sm">ลงทะเบียนและรับรหัส ID</button>
+        <div class="flex gap-2 pt-3 border-t border-slate-100 text-xs">
+          <button type="button" onclick="window.location.href='index.html'" class="border border-slate-300 hover:bg-slate-100 text-slate-700 py-2 px-4 rounded-lg font-medium transition">ย้อนกลับ</button>
+          <button type="submit" class="flex-[2] bg-blue-700 hover:bg-blue-800 text-white font-medium py-2 rounded-lg transition shadow-sm">ลงทะเบียนและขอรับรหัสประจำตัวผู้ป่วย</button>
         </div>
       </form>
     </div>
   </main>
 
   <canvas id="hiddenCanvas" class="hidden"></canvas>
-  <footer class="bg-slate-900 text-slate-400 text-center py-6 border-t border-slate-800 text-xs mt-12">
-    © 2026 วิทยาลัยเทคนิคสมุทรสงคราม · การศึกษาเพื่อพัฒนาชุมชนและการแพทย์ทางไกล
+
+  <footer class="bg-slate-900 text-slate-400 text-center py-5 border-t border-slate-800 text-xs mt-auto">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-2">
+      <div class="flex items-center gap-2">
+        <img src="static/logosstc.png" alt="SSTC" class="h-5 w-auto opacity-75">
+        <span class="font-medium text-slate-300">SMART BP READER</span>
+        <span>· วิทยาลัยเทคนิคสมุทรสงคราม</span>
+      </div>
+      <p class="text-[11px] text-slate-400">การศึกษาและพัฒนาระบบคัดกรองสุขภาพทางไกล (Telemedicine Portal)</p>
+    </div>
   </footer>
 
-  <!-- Scripts -->
   <script src="js/db.js"></script>
   <script src="js/face.js"></script>
-  
+  <script src="js/auth.js"></script>
+
   <script>
     const form = document.getElementById('registerForm');
     const weightInput = document.getElementById('weight');
@@ -231,8 +196,7 @@
     const bmiInput = document.getElementById('bmi');
     const messageAlert = document.getElementById('messageAlert');
     const hiddenCanvas = document.getElementById('hiddenCanvas');
-    
-    // Camera elements
+
     const regVideo = document.getElementById('regVideo');
     const btnCameraOpen = document.getElementById('btnCameraOpen');
     const btnCameraStop = document.getElementById('btnCameraStop');
@@ -242,21 +206,19 @@
     let regStream = null;
     let poseIndex = 0;
     let posePollTimer = null;
-    const capturedPhotos = [null, null, null]; // To store {dataUrl, hash, color} objects
-    
+    const capturedPhotos = [null, null, null];
+
     const posesSequence = [
-      { id: 0, text: "⬆ มองตรงให้อยู่เต็มกรอบ", label: "มองตรง" },
-      { id: 1, text: "⬅ หมุนศีรษะเอียงซ้ายช้าๆ", label: "เอียงซ้าย" },
-      { id: 2, text: "➡ หมุนศีรษะเอียงขวาช้าๆ", label: "เอียงขวา" }
+      { id: 0, text: "มองตรงให้อยู่เต็มกรอบ", label: "มองตรง", target: "straight" },
+      { id: 1, text: "หมุนศีรษะเอียงซ้ายช้าๆ", label: "เอียงซ้าย", target: "left" },
+      { id: 2, text: "หมุนศีรษะเอียงขวาช้าๆ", label: "เอียงขวา", target: "right" }
     ];
 
-    // Auto calculate BMI
     function calcBmi() {
       const w = parseFloat(weightInput.value);
       const h = parseFloat(heightInput.value);
       if (!isNaN(w) && !isNaN(h) && w > 0 && h > 0) {
-        const bmiVal = w / ((h / 100) ** 2);
-        bmiInput.value = bmiVal.toFixed(1);
+        bmiInput.value = (w / ((h / 100) ** 2)).toFixed(1);
       } else {
         bmiInput.value = '';
       }
@@ -265,20 +227,15 @@
     weightInput.addEventListener('input', calcBmi);
     heightInput.addEventListener('input', calcBmi);
 
-    // Camera actions
     btnCameraOpen.addEventListener('click', async () => {
       try {
         regStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
         regVideo.srcObject = regStream;
         regVideo.play();
-        
         btnCameraOpen.disabled = true;
         btnCameraStop.disabled = false;
-        
         resetSlots();
         captureHint.textContent = posesSequence[poseIndex].text;
-        
-        // Start looking for faces/poses
         posePollTimer = setInterval(analyzeRegisterPose, 1400);
       } catch (err) {
         alert("ไม่สามารถเปิดกล้อง: " + err.message);
@@ -299,14 +256,8 @@
     });
 
     function stopRegCamera() {
-      if (posePollTimer) {
-        clearInterval(posePollTimer);
-        posePollTimer = null;
-      }
-      if (regStream) {
-        regStream.getTracks().forEach(t => t.stop());
-        regStream = null;
-      }
+      if (posePollTimer) { clearInterval(posePollTimer); posePollTimer = null; }
+      if (regStream) { regStream.getTracks().forEach(t => t.stop()); regStream = null; }
       regVideo.srcObject = null;
       btnCameraOpen.disabled = false;
       btnCameraStop.disabled = true;
@@ -319,61 +270,55 @@
         const slot = document.getElementById(`slot${i}`);
         const img = document.getElementById(`imgSlot${i}`);
         const label = document.getElementById(`labelSlot${i}`);
-        
-        slot.className = "border border-slate-300 rounded-lg p-2 bg-white text-center flex flex-col justify-between h-[120px]";
+        slot.className = "border border-slate-200 rounded-lg p-1.5 bg-white text-center flex flex-col justify-between h-[90px]";
         img.src = "";
         img.classList.add('hidden');
         label.classList.remove('hidden');
       }
     }
 
-    // Capture & process face details client-side
     async function analyzeRegisterPose() {
       if (!regStream) return;
-      
       const currentPose = posesSequence[poseIndex];
       captureHint.textContent = `วิเคราะห์ท่า: ${currentPose.text}`;
-      
-      // Grab a frame and crop the face using face.js
+
+      const detectedPose = await face.detectPose(regVideo);
+      if (!detectedPose) {
+        captureHint.textContent = "ไม่พบใบหน้า กรุณาให้หน้าอยู่ในกรอบ";
+        return;
+      }
+      if (detectedPose !== currentPose.target) {
+        captureHint.textContent = `พบใบหน้า: กำลังหัน ${detectedPose} (ต้องการ: ${currentPose.target})`;
+        return;
+      }
+
       const croppedDataUrl = face.cropFaceFromVideo(regVideo, hiddenCanvas);
-      
-      // Compute features
       const hexHash = await face.calculateDHash(croppedDataUrl);
       const colorProfile = await face.calculateColorProfile(croppedDataUrl);
-      
-      // Save it into slot
-      capturedPhotos[poseIndex] = {
-        dataUrl: croppedDataUrl,
-        hash: hexHash,
-        color: colorProfile
-      };
-      
-      // Visual feedback
+
+      capturedPhotos[poseIndex] = { dataUrl: croppedDataUrl, hash: hexHash, color: colorProfile };
+
       const slot = document.getElementById(`slot${poseIndex}`);
       const img = document.getElementById(`imgSlot${poseIndex}`);
       const label = document.getElementById(`labelSlot${poseIndex}`);
-      
+
       img.src = croppedDataUrl;
       img.classList.remove('hidden');
       label.classList.add('hidden');
-      slot.className = "border-2 border-emerald-500 rounded-lg p-2 bg-emerald-50 text-center flex flex-col justify-between h-[120px]";
-      
-      // Proceed to next pose
+      slot.className = "border-2 border-emerald-500 rounded-lg p-1.5 bg-emerald-50/40 text-center flex flex-col justify-between h-[90px]";
+
       poseIndex++;
-      
       if (poseIndex >= 3) {
-        // Complete
         stopRegCamera();
-        captureHint.textContent = "ลงทะเบียนสแกนใบหน้าครบถ้วนแล้ว!";
+        captureHint.textContent = "ลงทะเบียนสแกนใบหน้าครบ 3 ท่าเรียบร้อย";
       } else {
         captureHint.textContent = posesSequence[poseIndex].text;
       }
     }
 
-    // Submit handler
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      
+
       const fullName = document.getElementById('fullName').value.trim();
       const dob = document.getElementById('dateOfBirth').value;
       const sex = document.getElementById('sex').value;
@@ -385,18 +330,14 @@
       const medications = document.getElementById('medications').value.trim();
       const email = document.getElementById('notifyEmail').value.trim();
       const telegram = document.getElementById('notifyTelegram').value.trim();
-      
-      // Generate a user ID sequentially
+
       const users = db.getUsers();
       let nextIdNum = 1;
       if (users.length > 0) {
         const ids = users.map(u => parseInt(u.user_id, 10)).filter(Number.isInteger);
-        if (ids.length > 0) {
-          nextIdNum = Math.max(...ids) + 1;
-        }
+        if (ids.length > 0) nextIdNum = Math.max(...ids) + 1;
       }
       const newUserId = String(nextIdNum).padStart(4, '0');
-
       const faceImagesBundle = capturedPhotos.filter(Boolean);
 
       const newUserObj = {
@@ -418,26 +359,31 @@
 
       try {
         db.saveUser(newUserObj);
-        
-        messageAlert.className = "p-4 rounded-lg text-sm text-center bg-emerald-50 text-emerald-900 border border-emerald-200 block";
-        messageAlert.innerHTML = `🎉 ลงทะเบียนผู้ใช้รายใหม่สำเร็จ!<br><strong class="text-lg">รหัส ID ผู้ป่วยของคุณคือ: ${newUserId}</strong><br>กรุณาจำรหัสนี้เพื่อบันทึกประวัติการวัดความดันโลหิต`;
-        
+        messageAlert.className = "p-4 rounded-lg text-xs text-center bg-emerald-50 text-emerald-900 border border-emerald-200 block font-semibold leading-relaxed";
+        messageAlert.innerHTML = `ลงทะเบียนประวัติผู้ป่วยรายใหม่เสร็จสมบูรณ์<br><span class="text-sm">รหัสประจำตัวผู้ป่วย: <strong class="text-emerald-700 font-bold text-lg">${newUserId}</strong></span><br><span class="text-[11px] text-slate-600">กรุณาจดจำรหัสนี้เพื่อใช้ในการคัดกรองวัดความดันโลหิต</span>`;
         form.reset();
         bmiInput.value = '';
         resetSlots();
-        
-        // Scroll to top of alert
         messageAlert.scrollIntoView({ behavior: 'smooth' });
       } catch (err) {
-        messageAlert.className = "p-4 rounded-lg text-sm text-center bg-rose-50 text-rose-900 border border-rose-200 block";
-        messageAlert.textContent = "เกิดข้อผิดพลาดในการลงทะเบียน: " + err.message;
+        messageAlert.className = "p-4 rounded-lg text-xs text-center bg-rose-50 text-rose-900 border border-rose-200 block font-semibold";
+        messageAlert.textContent = "เกิดข้อผิดพลาด: " + err.message;
       }
     });
 
-    window.addEventListener('beforeunload', () => {
-      stopRegCamera();
+    window.addEventListener('beforeunload', () => { stopRegCamera(); });
+
+    window.addEventListener('load', async () => {
+      if (typeof faceapi !== 'undefined') {
+        const MODEL_URL = 'https://justadudewhohacks.github.io/face-api.js/models';
+        try {
+          await Promise.all([
+            faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
+            faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL)
+          ]);
+        } catch(e) { console.error(e); }
+      }
     });
   </script>
-
 </body>
 </html>

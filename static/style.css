@@ -1,0 +1,176 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap');
+
+/* ================================================================
+   DESIGN TOKENS
+   Government-grade medical portal. Minimal, clinical, durable.
+   ================================================================ */
+
+:root {
+  --font-primary: 'Sarabun', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Page structure */
+  --bg-page:       #f8fafc;
+  --bg-card:       #ffffff;
+  --bg-card-alt:   #f8fafc;
+
+  /* Borders */
+  --border-subtle: #e2e8f0;
+  --border-strong: #cbd5e1;
+
+  /* Text hierarchy */
+  --text-heading:  #0f172a;
+  --text-body:     #334155;
+  --text-muted:    #64748b;
+  --text-faint:    #94a3b8;
+
+  /* Primary (government blue) */
+  --gov-blue:       #1e40af;
+  --gov-blue-hover: #1e3a8a;
+  --gov-blue-light: #eff6ff;
+
+  /* Shadows — intentionally understated */
+  --shadow-card:     0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
+  --shadow-elevated: 0 4px 6px -1px rgba(15, 23, 42, 0.06), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
+}
+
+/* ================================================================
+   BASE RESET
+   ================================================================ */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-primary);
+  background-color: var(--bg-page);
+  color: var(--text-body);
+  min-height: 100vh;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ================================================================
+   SCROLLBAR — thin, unobtrusive
+   ================================================================ */
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* ================================================================
+   HEADER / NAVBAR
+   ================================================================ */
+
+.header-gov {
+  background-color: #0f172a;
+  border-bottom: 1px solid #1e293b;
+}
+
+/* ================================================================
+   CLINICAL LEVEL COLORS
+   Used for SYS/DIA/PULSE value boxes and interpretation cards.
+   ================================================================ */
+
+.level-low {
+  background-color: #eff6ff !important;
+  border-color: #bfdbfe !important;
+  color: #1d4ed8 !important;
+}
+.level-good {
+  background-color: #f0fdf4 !important;
+  border-color: #bbf7d0 !important;
+  color: #15803d !important;
+}
+.level-adjust {
+  background-color: #fefce8 !important;
+  border-color: #fef08a !important;
+  color: #a16207 !important;
+}
+.level-mid {
+  background-color: #fff7ed !important;
+  border-color: #fed7aa !important;
+  color: #c2410c !important;
+}
+.level-high {
+  background-color: #fff1f2 !important;
+  border-color: #fecdd3 !important;
+  color: #be123c !important;
+}
+.level-danger {
+  background-color: #fef2f2 !important;
+  border-color: #fca5a5 !important;
+  color: #991b1b !important;
+}
+
+/* ================================================================
+   FORM ELEMENTS — consistent focus states
+   ================================================================ */
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+input[type="password"],
+input[type="email"],
+input[type="tel"],
+input[type="url"],
+select,
+textarea {
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #2563eb !important;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.08) !important;
+  outline: none;
+}
+
+/* ================================================================
+   SELECTION HIGHLIGHT
+   ================================================================ */
+
+::selection {
+  background-color: #dbeafe;
+  color: #1e3a8a;
+}
+
+/* ================================================================
+   PRINT
+   ================================================================ */
+
+@media print {
+  header, footer, nav, button, .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 10pt;
+  }
+
+  main {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+}

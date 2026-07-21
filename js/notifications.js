@@ -23,7 +23,7 @@ const notifications = {
 
   // Send Discord notification via Webhook
   sendDiscordNotification: async function(record, settings) {
-    const webhookUrl = settings.discordWebhook;
+    const webhookUrl = settings.discordWebhookUrl || settings.discordWebhook;
     if (!webhookUrl || !webhookUrl.startsWith('https://discord.com/api/webhooks/')) {
       console.log("Discord webhook is empty or invalid. Skipping.");
       return false;
@@ -89,8 +89,8 @@ const notifications = {
 
   // Send Telegram notification via Bot API
   sendTelegramNotification: async function(record, settings) {
-    const botToken = settings.telegramToken;
-    const chatId = settings.telegramChatId;
+    const botToken = settings.telegramBotToken || settings.telegramToken;
+    const chatId = settings.telegramDefaultChatId || settings.telegramChatId;
     
     if (!botToken || !chatId) {
       console.log("Telegram bot token or Chat ID is missing. Skipping.");
@@ -142,6 +142,31 @@ const notifications = {
     // Non-blocking parallel calls
     this.sendDiscordNotification(record, settings);
     this.sendTelegramNotification(record, settings);
+  },
+
+  // Test webhook notifications manually
+  testNotification: async function(type) {
+    if (typeof window.db === 'undefined') return false;
+    const settings = window.db.getSettings();
+    const mockRecord = {
+      name: "ทดสอบระบบการเชื่อมต่อ (System Test)",
+      patient_id: "9999",
+      timestamp: new Date().toISOString().replace('T', ' ').substring(0, 16),
+      SYS: 120,
+      DIA: 80,
+      PULSE: 75,
+      posture: "sitting",
+      arm: "right",
+      pre_measure_behavior: "นั่งพักผ่อน 5 นาที",
+      symptoms: "ทดสอบการส่งสัญญาณการแจ้งเตือน"
+    };
+
+    if (type === 'discord') {
+      return await this.sendDiscordNotification(mockRecord, settings);
+    } else if (type === 'telegram') {
+      return await this.sendTelegramNotification(mockRecord, settings);
+    }
+    return false;
   }
 };
 

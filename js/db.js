@@ -111,7 +111,7 @@ const DEFAULT_SETTINGS = {
   telegramToken: "",
   telegramChatId: "",
   adminPassword: "admin", // Default password for management page
-  faceConfidenceThreshold: 75,
+  faceConfidenceThreshold: 75
 };
 
 // Initialize DB if empty

@@ -170,6 +170,29 @@ const face = {
     }
     
     return null;
+  },
+
+  // Detect face pose using face-api.js landmarks (returns 'straight', 'left', 'right', or null if no face)
+  detectPose: async function(videoElement) {
+    if (typeof faceapi === 'undefined' || !faceapi.nets.tinyFaceDetector.isLoaded) return null;
+    
+    const detection = await faceapi.detectSingleFace(videoElement, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks();
+    if (!detection) return null;
+    
+    const landmarks = detection.landmarks;
+    const nose = landmarks.getNose()[0];
+    const jaw = landmarks.getJawOutline();
+    const jawLeft = jaw[0];
+    const jawRight = jaw[16];
+    
+    const distLeft = nose.x - jawLeft.x;
+    const distRight = jawRight.x - nose.x;
+    const ratio = distLeft / distRight;
+    
+    // Evaluate turn based on ratio of left/right distances from nose to jaw edge
+    if (ratio < 0.65) return 'right'; // Looking right (left side is compressed)
+    if (ratio > 1.5) return 'left';   // Looking left (right side is compressed)
+    return 'straight';
   }
 };
 
